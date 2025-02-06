@@ -49,7 +49,7 @@ def get_transcript():
 
         return jsonify({"captions": captions})
 
-    except TranscriptNotFound:
+    except NoTranscriptFound:
         return jsonify({"error": "Transcript not found"}), 404
     except CouldNotRetrieveTranscript as e:
         return jsonify({"error": str(e)}), 400
