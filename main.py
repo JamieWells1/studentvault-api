@@ -6,28 +6,28 @@ from youtube_transcript_api import (
 )
 import requests
 
+# Flask app setup
 app = Flask(__name__)
 
+# Proxy setup
 username = "spcjl3kcj6"
 password = "7e8GNrfkD_fdo3eq7Y"
 proxy = f"https://{username}:{password}@gate.smartproxy.com:10001"
 proxies = {"http": proxy, "https": proxy}
 
+# Monkey patch requests.get to disable SSL verification and use the proxy
+original_requests_get = requests.get
 
-class CustomYouTubeTranscriptApi(YouTubeTranscriptApi):
-    @classmethod
-    def _get_transcripts(cls, video_ids, languages):
-        """
-        Override the default method to add SSL verification and proxy settings.
-        """
-        response = requests.get(
-            f"https://www.youtube.com/watch?v={video_ids[0]}",
-            proxies=proxies,
-            verify=False,
-        )
-        if response.status_code != 200:
-            raise CouldNotRetrieveTranscript("Failed to retrieve the transcript")
-        return super()._get_transcripts(video_ids, languages)
+
+def custom_requests_get(*args, **kwargs):
+    # Set the proxy and disable SSL verification
+    kwargs["proxies"] = proxies
+    kwargs["verify"] = False
+    return original_requests_get(*args, **kwargs)
+
+
+# Apply the monkey patch
+requests.get = custom_requests_get
 
 
 @app.route("/transcript/", methods=["POST"])
@@ -37,10 +37,10 @@ def get_transcript():
         if not video_id:
             return jsonify({"error": "video_id is required"}), 400
 
-        transcript = CustomYouTubeTranscriptApi.get_transcript(
-            video_id, proxies=proxies
-        )
+        # Fetch the transcript using the patched request
+        transcript = YouTubeTranscriptApi.get_transcript(video_id, proxies=proxies)
 
+        # Combine captions into a single string
         captions = " ".join([item["text"] for item in transcript])
 
         return jsonify({"captions": captions})
@@ -53,17 +53,17 @@ def get_transcript():
         return jsonify({"error": str(e)}), 400
 
 
-@app.route("/proxy-test/", methods=["GET"])
-def proxy_test():
+@app.route("/proxy-diagnose/", methods=["GET"])
+def proxy_diagnose():
     try:
         response = requests.get(
-            "https://www.youtube.com/",
-            proxies=proxies,
-            verify=False,
-            timeout=10,
+            "https://www.youtube.com/", proxies=proxies, verify=False, timeout=10
         )
         return jsonify(
-            {"status_code": response.status_code, "content": response.text[:500]}
+            {
+                "status_code": response.status_code,
+                "content_snippet": response.text[:500],
+            }
         )
     except Exception as e:
         return jsonify({"error": str(e)}), 500
