@@ -11,21 +11,31 @@ app = Flask(__name__)
 @app.route("/create-with-ai/", methods=["POST"])
 def create_resource():
     data = request.get_json()
+    """
 
-    if not data:
-        return json.dumps({"error": "no data provided"}), 400
+    example_request = {
+        "video_id": uNeyu46JtIk,
+        "generation_method": "video",
+        "content": "",
+        "resource_type": "lesson",
+        }
 
-    video_id = data["video_id"]
-    print("video id: ", video_id)
+    """
 
-    get_captions = json.loads(business_logic.get_transcript(video_id))
-    if get_captions["status"] == 400:
-        return json.dumps(get_captions["error"])
+    error = business_logic.handle_body_errors(data)
+    if error:
+        return json.dumps({"status": 200, "message": f"Invalid body content: {error}"})
+
+    if data["generation_method"] == "video":
+        get_captions = json.loads(business_logic.get_transcript(data["video_id"]))
+        if get_captions["status"] == 400:
+            return json.dumps({"status": 200, "message": get_captions["error"]})
 
     return (
         json.dumps(
             {
-                "message": "Lesson created successfully",
+                "status": 200,
+                "message": "Resource created successfully",
                 "captions": get_captions["captions"],
             }
         ),
