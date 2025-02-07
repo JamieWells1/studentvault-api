@@ -1,4 +1,4 @@
-def get_transcript():
+def get_transcript(video_id):
     try:
         transcript = YouTubeTranscriptApi.get_transcript(
             video_id, proxies={"https": proxy, "http": proxy}

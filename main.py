@@ -1,29 +1,4 @@
-from flask import Flask, request, jsonify
-from youtube_transcript_api import YouTubeTranscriptApi
-import requests
-
-import business_logic
-
-app = Flask(__name__)
-
-url = "https://ip.smartproxy.com/json"
-username = "spcjl3kcj6"
-password = "pexigQ24E0x0=dMYcu"
-proxy = f"http://{username}:{password}@gate.smartproxy.com:10001"
-
-
-@app.route("/lesson-from-video/", methods=["POST"])
-def create_lesson():
-    video_id = request.args.get("video_id")
-    if not video_id:
-        return jsonify({"error": "video_id is required"}), 400
-
-    captions, status = business_logic.get_transcript()
-    if status == 400:
-        return captions
-
-    
-
+from app import main
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    main()
