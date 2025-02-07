@@ -1,25 +1,34 @@
-from flask import Flask, request, jsonify
-from youtube_transcript_api import YouTubeTranscriptApi
-import business_logic
+import json
+
+import core.business_logic as business_logic
+
+from flask import Flask, request
+
 
 app = Flask(__name__)
 
 
-@app.route("/create-resource-with-ai/", methods=["POST"])
+@app.route("/create-with-ai/", methods=["POST"])
 def create_resource():
     data = request.get_json()
 
     if not data:
-        return jsonify({"error": "no data provided"}), 400
+        return json.dumps({"error": "no data provided"}), 400
 
     video_id = data["video_id"]
+    print("video id: ", video_id)
 
-    captions, status = business_logic.get_transcript(video_id)
-    if status == 400:
-        return captions
+    get_captions = json.loads(business_logic.get_transcript(video_id))
+    if get_captions["status"] == 400:
+        return json.dumps(get_captions["error"])
 
     return (
-        jsonify({"message": "Lesson created successfully", "captions": captions}),
+        json.dumps(
+            {
+                "message": "Lesson created successfully",
+                "captions": get_captions["captions"],
+            }
+        ),
         200,
     )
 
