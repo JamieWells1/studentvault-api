@@ -1,3 +1,5 @@
+from typing import Union
+
 from pydantic import BaseModel
 
 
@@ -12,11 +14,11 @@ class MultipleChoiceQuestion(BaseModel):
 
 
 class FillInTheBlanksQuestion(BaseModel):
-    sentence: str
+    fill_in_the_blank: str
 
 
 class Text(BaseModel):
-    content: str
+    text: str
 
 
 class Flashcard(BaseModel):
@@ -28,7 +30,7 @@ class Flashcard(BaseModel):
 
 
 class Lesson(BaseModel):
-    blocks: list[Text, FillInTheBlanksQuestion, MultipleChoiceQuestion]
+    blocks: list[Union[Text, FillInTheBlanksQuestion, MultipleChoiceQuestion]]
 
 
 class FlashcardDeck(BaseModel):

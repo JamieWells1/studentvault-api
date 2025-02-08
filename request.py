@@ -3,9 +3,7 @@ import json
 import random
 
 import tests.test_endpoint as endpoint
-
-DEV_URL = "http://127.0.0.1:8080/create-with-ai/"
-PROD_URL = "https://youtube-captions-api.onrender.com/create-with-ai/"
+from config.const import DEV_URL, PROD_URL
 
 
 video_ids = [
@@ -22,8 +20,8 @@ selected_id = video_ids[random.randint(0, len(video_ids) - 1)]
 
 video_id = selected_id
 generation_method = "text"
-text_prompt = "Create me a quiz on bouldering techniques"
-resource_type = "quiz"
+text_prompt = "Create me a quiz on fission in A-Level Physics"
+resource_type = "lesson"
 
 headers = {"Content-Type": "application/json"}
 body = {
