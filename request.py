@@ -17,13 +17,20 @@ video_ids = [
     "nKxpEHBDMjQ",
 ]
 
-video_id = video_ids[random.randint(0, len(video_ids) - 1)]
+# If video_id should be none this is a placeholder
+selected_id = video_ids[random.randint(0, len(video_ids) - 1)]
+
+video_id = selected_id
+generation_method = "video"
+text_prompt = "Generate me a cool lesson on electricity"
+resource_type = "lesson"
+
 headers = {"Content-Type": "application/json"}
 body = {
     "video_id": video_id,
-    "generation_method": "video",
-    "text_prompt": "Generate me a cool lesson on electricity",
-    "resource_type": "lesson",
+    "generation_method": generation_method,
+    "text_prompt": text_prompt,
+    "resource_type": resource_type,
 }
 
 response = endpoint.send_request(DEV_URL, headers, body)

@@ -6,6 +6,9 @@ from youtube_transcript_api import YouTubeTranscriptApi
 class Youtube:
     def __init__(self, video_id):
         self.video_id = video_id
+        self.error_messages = {
+            "invalid_url": "The video URL you provided either isn't a valid URL or the video doesn't support captions.",
+        }
 
     def get_captions(self):
         errors = []
@@ -15,10 +18,9 @@ class Youtube:
             )
             captions = " ".join([item["text"] for item in transcript])
 
-            response = {"status": 200, "captions": captions, "errors": []}
+            return {"status": 200, "captions": captions, "errors": []}
 
-        except Exception as e:
-            errors.append(e)
-            response = {"status": 400, "errors": errors}
+        except Exception:
+            errors.append(self.error_messages["invalid_url"])
 
-        return response
+        return {"status": 400, "errors": errors}

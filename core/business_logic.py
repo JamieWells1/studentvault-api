@@ -23,12 +23,10 @@ class FinalPayload:
         response = error_handler.handle()
 
         if response["status"] == 400:
-            return json.dumps(
-                {
-                    "status": response["status"],
-                    "payload": f"Found {len(response["errors"])} errors: {response["errors"][0]}",
-                }
-            )
+            return {
+                "status": response["status"],
+                "payload": f"Found {len(response["errors"])} errors: {response["errors"]}",
+            }
 
         payload = response["captions"]
 
