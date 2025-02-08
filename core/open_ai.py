@@ -139,7 +139,9 @@ def create_flashcard_deck(text_prompt, generation_method):
     shared_instructions = """Each flashcard should have a simple front term and back definition. When necassary 
     or when you see fit, make sure to include a short and sweet explanation about why the definition matches 
     up to that specific term. Bear in mind that some users will want flashcards with translations from one 
-    language to another, so make sure to include things such as cognates and sentence examples when appropriate. """
+    language to another, so make sure to include things such as cognates and sentence examples when appropriate. 
+    You must make sure that the front of each flashcard is descriptive enough for the user to know what they 
+    should be answering. For example, instead of putting 'nuclear fission', put 'what is nuclear fission?' """
 
     if generation_method == "video":
         instructions = """You are to create a flashcard deck based on the following video transcript.
