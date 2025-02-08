@@ -1,0 +1,5 @@
+__pycache__
+.venv
+__init__.py
+root_test_openai.py
+.DS_Store
