@@ -2,6 +2,7 @@ import json
 from dataclasses import dataclass
 
 from core.error_handler import ErrorHandler
+import core.open_ai as open_ai
 
 
 @dataclass
@@ -12,25 +13,68 @@ class BodyData:
     resource_type: str
 
 
-class FinalPayload:
+class Server:
     def __init__(self, data):
         self.data = data
+
+    def __handle_resource_generation(self, text_prompt):
+        # Invoke the right method to create our AI resource
+        if self.data.resource_type == "lesson":
+            lesson = open_ai.create_lesson(
+                text_prompt=text_prompt, generation_method=self.data.generation_method
+            )
+            return {
+                "status": 200,
+                "resource_type": self.data.resource_type,
+                "payload": lesson,
+            }
+
+        elif self.data.resource_type == "quiz":
+            quiz = open_ai.create_mc_quiz(
+                text_prompt=text_prompt, generation_method=self.data.generation_method
+            )
+            return {
+                "status": 200,
+                "resource_type": self.data.resource_type,
+                "payload": quiz,
+            }
+
+        elif self.data.resource_type == "flashcard_deck":
+            flashcard_deck = open_ai.create_flashcard_deck(
+                text_prompt=text_prompt, generation_method=self.data.generation_method
+            )
+            return {
+                "status": 200,
+                "resource_type": self.data.resource_type,
+                "payload": flashcard_deck,
+            }
+
+        return {
+            "status": 400,
+            "payload": "There were no issues found but OpenAI did not process your request.",
+        }
 
     def generate(self):
 
         # Error handling
-        error_handler = ErrorHandler(data=self.data)
-        response = error_handler.handle()
+        errors = ErrorHandler(data=self.data)
+        handler = errors.handle()
 
-        if response["status"] == 400:
+        if handler["status"] == 400:
+            errors_found = handler.get("errors")
+            error_message = (
+                f"Found {len(errors_found)} errors: {', '.join(errors_found)}"
+            )
             return {
-                "status": response["status"],
-                "payload": f"Found {len(response["errors"])} errors: {response["errors"]}",
+                "status": handler["status"],
+                "payload": error_message,
             }
 
-        payload = response["captions"]
+        # Get prompt text from validation service
+        text_prompt = handler["payload"]
+        try:
+            text_prompt = handler["payload"]["captions"]
+        except:
+            pass
 
-        return {
-            "status": response["status"],
-            "payload": payload,
-        }
+        return self.__handle_resource_generation(text_prompt)

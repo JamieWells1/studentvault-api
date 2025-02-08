@@ -14,7 +14,7 @@ def create_resource():
     """
 
     example_request = {
-        "video_id": uNeyu46JtIk,
+        "video_id": "uNeyu46JtIk",
         "generation_method": "video",
         "text_prompt": "",
         "resource_type": "lesson",
@@ -29,10 +29,11 @@ def create_resource():
         resource_type=data.get("resource_type"),
     )
 
-    payload_handler = business_logic.FinalPayload(data)
-    final_response = payload_handler.generate()
+    server = business_logic.Server(data)
 
-    return json.dumps(final_response)
+    resource = server.generate()
+
+    return json.dumps(resource)
 
 
 def main():
