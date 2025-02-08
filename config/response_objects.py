@@ -9,7 +9,7 @@ from pydantic import BaseModel
 class MultipleChoiceQuestion(BaseModel):
     question: str
     wrong_answers: list[str]
-    correct_answers: list[str]
+    correct_answer: str
     explanation: str
 
 

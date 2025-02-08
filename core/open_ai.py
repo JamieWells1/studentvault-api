@@ -11,14 +11,18 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 def create_mc_quiz(text_prompt, generation_method):
 
-    shared_instructions = """Each question can more than one correct 
-    answer, but each question must have exactly 4 answers to choose from 
-    in total, including both correct and wrong answers. """
+    shared_instructions = """Each multiple choice question must have exactly 3 
+    wrong answers in the 'wrong_answers' list and each wrong answer must be
+    different to the correct answer; there cannot be two of the same option in any given question. 
+    It is important that each question is not too easy - answers should be similar in nature in order 
+    to make it challenging, but not too similar that it becomes unclear which answer is correct, 
+    even if the user knows the answer. """
 
     if generation_method == "video":
         instructions = """You are to create a multiple choice quiz based on the following video transcript. 
         The amount of questions that you create should depend on the length of the video transcript and how 
-        much content is covered in the transcript. """
+        much content is covered in the transcript. You must omit any content you find that is not relevant 
+        to the general topic of the video, such as promotions and ads. """
 
     elif generation_method == "text":
         instructions = """You are to create a multiple choice quiz based on the following text prompt. 
@@ -39,18 +43,35 @@ def create_mc_quiz(text_prompt, generation_method):
         response_format=models.Quiz,
     )
     quiz = json.loads(response.choices[0].message.content)
+
+    quiz["questions"] = remove_extra_answers(quiz["questions"])
+
     return quiz
+
+
+def remove_extra_answers(questions):
+    for question in questions:
+        answers_to_remove = len(question["wrong_answers"]) - 3
+        if answers_to_remove > 0:
+            for i in range(1, answers_to_remove + 1):
+                question["wrong_answers"].pop(-i)
+
+    return questions
 
 
 def create_lesson(text_prompt, generation_method):
 
     shared_instructions = """The lesson will contain a mixture of text blocks (which you will use for explaining concepts), 
     multiple choice question blocks and fill in the blanks blocks. Each text block must contain 2-3 sentences, and 
-    multiple choice questions must have exactly 4 answers to choose from in total, including 
-    both correct and wrong answers. The string returned for each fill in the blank block must have the
-    following syntax: 'Protons are made up of two [up quarks/up] and one [down quark/down]', where each blank is 
-    represented by a pair of square brackets, and inside the square brackets are the correct answers. 
-    There can br more than one correct answer for each blank, and each correct answer should be 
+    multiple choice questions must have exactly 3 wrong answers in the 'wrong_answers' list, and each wrong answer must be
+    different to the correct answer; there cannot be two of the same option in any given question.
+    It is important that each question is not too easy - answers should be similar in nature in order 
+    to make it challenging, but not too similar that it becomes unclear which answer is correct, 
+    even if the user knows the answer. 
+    The string returned for each fill in the blank block must have the following syntax: 'Protons are 
+    made up of two [up quarks/up] and one [down quark/down]', where each blank is represented 
+    by a pair of square brackets, and inside the square brackets are the correct answers. 
+    There can be more than one correct answer for each blank, and each correct answer should be 
     separated by a forward slash. There can be multiple blanks per string, but never add more than 
     3 blanks to any given string. The lesson should take the user about 5 minutes to complete, and 
     you must follow the following format with the same blocks in the same places: 
@@ -63,7 +84,7 @@ def create_lesson(text_prompt, generation_method):
     {
       "question": "question",
       "wrong_answers": ["Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3"],
-      "correct_answers": ["Correct Answer 1"],
+      "correct_answer": "Correct Answer",
       "explanation": "Explanation"
     },
     {
@@ -78,7 +99,7 @@ def create_lesson(text_prompt, generation_method):
     {
       "question": "question",
       "wrong_answers": ["Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3"],
-      "correct_answers": ["Correct Answer 1"],
+      "correct_answer": "Correct Answer",
       "explanation": "Explanation"
     },
     {
@@ -87,7 +108,7 @@ def create_lesson(text_prompt, generation_method):
     {
       "question": "question",
       "wrong_answers": ["Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3"],
-      "correct_answers": ["Correct Answer 1"],
+      "correct_answer": "Correct Answer",
       "explanation": "Explanation"
     },
     {
@@ -107,9 +128,9 @@ def create_lesson(text_prompt, generation_method):
     """
 
     if generation_method == "video":
-        instructions = (
-            """You are to create a lesson based on the transcript provided. """
-        )
+        instructions = """You are to create a lesson based on the transcript provided. 
+            You must omit any content you find that is not relevant 
+            to the general topic of the video, such as promotions and ads. """
 
     elif generation_method == "text":
         instructions = (
@@ -141,12 +162,19 @@ def create_flashcard_deck(text_prompt, generation_method):
     up to that specific term. Bear in mind that some users will want flashcards with translations from one 
     language to another, so make sure to include things such as cognates and sentence examples when appropriate. 
     You must make sure that the front of each flashcard is descriptive enough for the user to know what they 
-    should be answering. For example, instead of putting 'nuclear fission', put 'what is nuclear fission?' """
+    should be answering. For example, instead of putting 'nuclear fission', put 'what is nuclear fission?'. 
+    At the same time, the flashcard is supposed to be quick and each side should not be in full sentences. Rather than 
+    'What is the purpose of using different colors in the derivation approach?' on the front and 'Different colors are 
+    used in the derivation to visually differentiate steps and enhance understanding.' on the back, it should be 
+    'purpose of using different colors in the derivation approach' on the front and 'visually differentiate steps and enhance 
+    understanding' on the back. That way, the user can understand what the front of the flashcard is asking whilst 
+    not being overwhelmed with text. """
 
     if generation_method == "video":
         instructions = """You are to create a flashcard deck based on the following video transcript.
         It doesn't matter how many flashcards you generate (unless specified by the user) as the ultimate goal 
-        is to cover everything in the transcript. """
+        is to cover everything in the transcript. You must omit any content you find that is not relevant 
+        to the general topic of the video, such as promotions and ads. """
 
     elif generation_method == "text":
         instructions = """You are to create a flashcard deck based on the following video transcript.

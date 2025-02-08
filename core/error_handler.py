@@ -40,11 +40,6 @@ class ErrorHandler:
 
         return {"status": 200, "captions": captions_response["captions"]}
 
-    def __handle_openai_errors(self) -> List[str]:
-        errors = []
-
-        return errors
-
     # Parent handler
 
     def handle(self) -> List[str]:
@@ -62,9 +57,6 @@ class ErrorHandler:
                 return {"status": 400, "errors": errors}
 
             return {"status": 200, "payload": captions_response}
-
-        # Handle errors when forming OpenAI response
-        errors.extend(self.__handle_openai_errors())
 
         if errors:
             return {"status": 400, "errors": errors}
