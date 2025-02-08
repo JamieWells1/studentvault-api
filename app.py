@@ -16,31 +16,23 @@ def create_resource():
     example_request = {
         "video_id": uNeyu46JtIk,
         "generation_method": "video",
-        "content": "",
+        "text_prompt": "",
         "resource_type": "lesson",
         }
 
     """
 
-    error = business_logic.handle_body_errors(data)
-    if error:
-        return json.dumps({"status": 200, "message": f"Invalid body content: {error}"})
-
-    if data["generation_method"] == "video":
-        get_captions = json.loads(business_logic.get_transcript(data["video_id"]))
-        if get_captions["status"] == 400:
-            return json.dumps({"status": 200, "message": get_captions["error"]})
-
-    return (
-        json.dumps(
-            {
-                "status": 200,
-                "message": "Resource created successfully",
-                "captions": get_captions["captions"],
-            }
-        ),
-        200,
+    data = business_logic.BodyData(
+        video_id=data.get("video_id"),
+        generation_method=data.get("generation_method"),
+        text_prompt=data.get("text_prompt"),
+        resource_type=data.get("resource_type"),
     )
+
+    payload_handler = business_logic.FinalPayload(data)
+    final_response = payload_handler.generate()
+
+    return json.dumps(final_response)
 
 
 def main():

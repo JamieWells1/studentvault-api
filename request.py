@@ -28,5 +28,6 @@ body = {
 
 response = endpoint.send_request(DEV_URL, headers, body)
 
-print("Status Code:", response.status_code)
-print("Response:", response.text)
+print(
+    f"\n========================== Response: ==========================\n\n{response.text}\n"
+)

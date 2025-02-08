@@ -27,12 +27,40 @@ ports = [
     10023,
     10024,
     10025,
+    10026,
+    10027,
+    10028,
+    10029,
+    10030,
+    10031,
+    10032,
+    10033,
+    10034,
+    10035,
+    10036,
+    10037,
+    10038,
+    10039,
+    10040,
+    10041,
+    10042,
+    10043,
+    10044,
+    10045,
+    10046,
+    10047,
+    10048,
+    10049,
+    10050,
 ]
 
 port = ports[random.randint(0, len(ports) - 1)]
 
+__username = "spcjl3kcj6"
+__password = "P+s3l3g2xBXe5dlnRo"
+
 PROXY = {
-    "url": f"http://spcjl3kcj6:pexigQ24E0x0=dMYcu@gate.smartproxy.com:{port}",
+    "url": f"http://{__username}:{__password}@gate.smartproxy.com:{port}",
 }
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
