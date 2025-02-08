@@ -135,4 +135,35 @@ def create_lesson(text_prompt, generation_method):
 
 
 def create_flashcard_deck(text_prompt, generation_method):
-    pass
+
+    shared_instructions = """Each flashcard should have a simple front term and back definition. When necassary 
+    or when you see fit, make sure to include a short and sweet explanation about why the definition matches 
+    up to that specific term. Bear in mind that some users will want flashcards with translations from one 
+    language to another, so make sure to include things such as cognates and sentence examples when appropriate. """
+
+    if generation_method == "video":
+        instructions = """You are to create a flashcard deck based on the following video transcript.
+        It doesn't matter how many flashcards you generate (unless specified by the user) as the ultimate goal 
+        is to cover everything in the transcript. """
+
+    elif generation_method == "text":
+        instructions = """You are to create a flashcard deck based on the following video transcript.
+        It doesn't matter how many flashcards you generate (unless specified by the user) as the ultimate goal 
+        is to cover everything in the text prompt. """
+
+    response = client.beta.chat.completions.parse(
+        messages=[
+            {
+                "role": "system",
+                "content": instructions + shared_instructions,
+            },
+            {
+                "role": "user",
+                "content": text_prompt,
+            },
+        ],
+        model=OPENAI_MODEL,
+        response_format=models.FlashcardDeck,
+    )
+    deck = json.loads(response.choices[0].message.content)
+    return deck
