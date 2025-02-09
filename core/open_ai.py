@@ -28,25 +28,27 @@ def create_mc_quiz(text_prompt, generation_method):
         instructions = """You are to create a multiple choice quiz based on the following text prompt. 
         The amount of questions that you create should depend on how much content the user is looking to cover. """
 
-    response = client.beta.chat.completions.parse(
-        messages=[
-            {
-                "role": "system",
-                "content": instructions + shared_instructions,
-            },
-            {
-                "role": "user",
-                "content": text_prompt,
-            },
-        ],
-        model=OPENAI_MODEL,
-        response_format=models.Quiz,
-    )
-    quiz = json.loads(response.choices[0].message.content)
+    try:
+        response = client.beta.chat.completions.parse(
+            messages=[
+                {
+                    "role": "system",
+                    "content": instructions + shared_instructions,
+                },
+                {
+                    "role": "user",
+                    "content": text_prompt,
+                },
+            ],
+            model=OPENAI_MODEL,
+            response_format=models.Quiz,
+        )
+        quiz = json.loads(response.choices[0].message.content)
+        quiz["questions"] = remove_extra_answers(quiz["questions"])
+        return {"status": 200, "payload": quiz}
 
-    quiz["questions"] = remove_extra_answers(quiz["questions"])
-
-    return quiz
+    except Exception as e:
+        return {"status": 400, "payload": e}
 
 
 def remove_extra_answers(questions):
@@ -137,22 +139,26 @@ def create_lesson(text_prompt, generation_method):
             """You are to create a lesson based on the text prompt provided. """
         )
 
-    response = client.beta.chat.completions.parse(
-        messages=[
-            {
-                "role": "system",
-                "content": instructions + shared_instructions,
-            },
-            {
-                "role": "user",
-                "content": text_prompt,
-            },
-        ],
-        model=OPENAI_MODEL,
-        response_format=models.Lesson,
-    )
-    lesson = json.loads(response.choices[0].message.content)
-    return lesson
+    try:
+        response = client.beta.chat.completions.parse(
+            messages=[
+                {
+                    "role": "system",
+                    "content": instructions + shared_instructions,
+                },
+                {
+                    "role": "user",
+                    "content": text_prompt,
+                },
+            ],
+            model=OPENAI_MODEL,
+            response_format=models.Lesson,
+        )
+        lesson = json.loads(response.choices[0].message.content)
+        return {"status": 200, "payload": lesson}
+
+    except Exception as e:
+        return {"status": 400, "payload": e}
 
 
 def create_flashcard_deck(text_prompt, generation_method):
@@ -181,19 +187,23 @@ def create_flashcard_deck(text_prompt, generation_method):
         It doesn't matter how many flashcards you generate (unless specified by the user) as the ultimate goal 
         is to cover everything in the text prompt. """
 
-    response = client.beta.chat.completions.parse(
-        messages=[
-            {
-                "role": "system",
-                "content": instructions + shared_instructions,
-            },
-            {
-                "role": "user",
-                "content": text_prompt,
-            },
-        ],
-        model=OPENAI_MODEL,
-        response_format=models.FlashcardDeck,
-    )
-    deck = json.loads(response.choices[0].message.content)
-    return deck
+    try:
+        response = client.beta.chat.completions.parse(
+            messages=[
+                {
+                    "role": "system",
+                    "content": instructions + shared_instructions,
+                },
+                {
+                    "role": "user",
+                    "content": text_prompt,
+                },
+            ],
+            model=OPENAI_MODEL,
+            response_format=models.FlashcardDeck,
+        )
+        deck = json.loads(response.choices[0].message.content)
+        return {"status": 200, "payload": deck}
+
+    except Exception as e:
+        return {"status": 400, "payload": e}

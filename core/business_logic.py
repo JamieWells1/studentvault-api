@@ -20,33 +20,33 @@ class Server:
     def __handle_resource_generation(self, text_prompt):
         # Invoke the right method to create our AI resource
         if self.data.resource_type == "lesson":
-            lesson = open_ai.create_lesson(
+            response = open_ai.create_lesson(
                 text_prompt=text_prompt, generation_method=self.data.generation_method
             )
             return {
-                "status": 200,
+                "status": response["status"],
                 "resource_type": self.data.resource_type,
-                "payload": lesson,
+                "payload": response["payload"],
             }
 
         elif self.data.resource_type == "quiz":
-            quiz = open_ai.create_mc_quiz(
+            response = open_ai.create_mc_quiz(
                 text_prompt=text_prompt, generation_method=self.data.generation_method
             )
             return {
-                "status": 200,
+                "status": response["status"],
                 "resource_type": self.data.resource_type,
-                "payload": quiz,
+                "payload": response["payload"],
             }
 
         elif self.data.resource_type == "flashcard_deck":
-            flashcard_deck = open_ai.create_flashcard_deck(
+            response = open_ai.create_flashcard_deck(
                 text_prompt=text_prompt, generation_method=self.data.generation_method
             )
             return {
-                "status": 200,
+                "status": response["status"],
                 "resource_type": self.data.resource_type,
-                "payload": flashcard_deck,
+                "payload": response["payload"],
             }
 
         return {
