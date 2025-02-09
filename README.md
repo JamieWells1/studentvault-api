@@ -6,7 +6,7 @@ This is a proprietary API designed to retrieve captions from YouTube videos usin
 
 ### Prerequisites
 
-- Python 3.x
+- Python 3.13
 - Required Python packages (listed below)
 - A working YouTube video ID with captions enabled
 
