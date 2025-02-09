@@ -39,3 +39,7 @@ class FlashcardDeck(BaseModel):
 
 class Quiz(BaseModel):
     questions: list[MultipleChoiceQuestion]
+
+
+class Module(BaseModel):
+    sections: list[Union[Lesson, Quiz, FlashcardDeck]]
