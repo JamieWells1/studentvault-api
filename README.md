@@ -42,7 +42,7 @@ This will launch the server using Gunicorn, which is optimized for handling prod
 For development purposes, you can run the server with Flask:
 
 ```shell
-python3 app.py
+python3 main.py
 ```
 
 This starts the development server, which is useful for testing and debugging.
