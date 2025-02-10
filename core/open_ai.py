@@ -16,7 +16,20 @@ def create_mc_quiz(text_prompt, generation_method):
     different to the correct answer; there cannot be two of the same option in any given question. 
     It is important that each question is not too easy - answers should be similar in nature in order 
     to make it challenging, but not too similar that it becomes unclear which answer is correct, 
-    even if the user knows the answer. """
+    even if the user knows the answer. The incorrect answers must be plausible but incorrect. 
+    Ensure the distractors are relevant to the topic and designed to challenge users without being 
+    too easy or absurd. Where possible, distractors must reflect common misconceptions in order to 
+    increase difficulty. Based on user feedback, questions with distractor options like 'random guesses' 
+    are too easy. Generate a question with well-thought-out distractors that resemble real-world errors 
+    or misunderstandings. Here is an example of a good question based on the previously mentioned 
+    criteria:
+    
+    Which of the following explains why plants appear green under normal light conditions?
+    a) Green is absorbed by chlorophyll (distractor)
+    b) Chlorophyll reflects green light (correct)
+    c) Chlorophyll absorbs red and blue light but emits green (distractor)
+    d) All light except green is absorbed and stored (distractor)
+    """
 
     if generation_method == "video":
         instructions = """You are to create a multiple choice quiz based on the following video transcript. 
