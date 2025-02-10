@@ -4,7 +4,8 @@ import random
 
 # Start the server with a random proxy port
 port = str("100" + str(random.randint(10, 99)))
-print(f"Using port {port}")
+ROTATING_PORT = 7000
+print(f"Using port {ROTATING_PORT}")
 
 # Environment variables
 __username = "spcjl3kcj6"
@@ -12,7 +13,7 @@ __password = "P+s3l3g2xBXe5dlnRo"
 
 # Proxy URL
 PROXY = {
-    "url": f"http://{__username}:{__password}@gate.smartproxy.com:{port}",
+    "url": f"http://{__username}:{__password}@gate.smartproxy.com:{ROTATING_PORT}",
 }
 
 # Endpoints
