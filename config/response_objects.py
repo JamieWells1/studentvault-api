@@ -31,6 +31,7 @@ class Flashcard(BaseModel):
 
 class Lesson(BaseModel):
     blocks: list[Union[Text, FillInTheBlanksQuestion, MultipleChoiceQuestion]]
+    block_sections: list[int]
 
 
 class FlashcardDeck(BaseModel):

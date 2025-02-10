@@ -64,7 +64,9 @@ def remove_extra_answers(questions):
 def create_lesson(text_prompt, generation_method):
 
     shared_instructions = """The lesson will contain a mixture of text blocks (which you will use for explaining concepts), 
-    multiple choice question blocks and fill in the blanks blocks. Each text block must contain 2-3 sentences, and 
+    multiple choice question blocks and fill in the blanks blocks. For each block, it will have a corresponding section 
+    number, which will be in the 'sections' array. For example, if there are 12 items in the 'blocks' array, there must be 12 
+    integers in the sections array, each one corresponding to its block counterpart. Each text block must contain 2-3 sentences, and 
     multiple choice questions must have exactly 3 wrong answers in the 'wrong_answers' list, and each wrong answer must be
     different to the correct answer; there cannot be two of the same option in any given question.
     It is important that each question is not too easy - answers should be similar in nature in order 
@@ -125,6 +127,9 @@ def create_lesson(text_prompt, generation_method):
     {
       "fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"
     }
+  ],
+  "sections": [
+    1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5
   ]
 }
     """
