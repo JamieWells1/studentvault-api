@@ -11,7 +11,11 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 
 def create_mc_quiz(text_prompt, generation_method):
 
-    shared_instructions = """Each multiple choice question must have exactly 3 
+    shared_instructions = """
+    You are an expert instructional designer generating quizzes for a learning platform targeted at 
+    UK students aged 15-18. For any given quiz, here is the criteria:
+    
+    Each multiple choice question must have exactly 3 
     wrong answers in the 'wrong_answers' list and each wrong answer must be
     different to the correct answer; there cannot be two of the same option in any given question. 
     It is important that each question is not too easy - answers should be similar in nature in order 
@@ -76,7 +80,11 @@ def remove_extra_answers(questions):
 
 def create_lesson(text_prompt, generation_method):
 
-    shared_instructions = """The lesson will contain a mixture of text blocks (which you will use for explaining concepts), 
+    shared_instructions = """
+    You are an expert instructional designer generating lessons for a learning platform targeted at 
+    UK students aged 15-18. For any given lesson, here is the criteria:
+
+    The lesson will contain a mixture of text blocks (which you will use for explaining concepts), 
     multiple choice question blocks and fill in the blanks blocks. For each block, it will have a corresponding section 
     number, which will be in the 'sections' array. For example, if there are 12 items in the 'blocks' array, there must be 12 
     integers in the sections array, each one corresponding to its block counterpart. Each text block must contain 2-3 sentences, and 
@@ -201,8 +209,8 @@ Here is an example response:
     {
       "question": "What is the significance of measuring the extension accurately in this experiment?",
       "wrong_answers": [
-        "To ensure the wire snaps",
-        "To determine the weight of the mass",
+        "To ensure the wire holds together",
+        "To determine the weight of the wire",
         "To calculate the length of the wire"
       ],
       "correct_answer": "To reduce the percentage uncertainty in the measurements",
@@ -212,10 +220,10 @@ Here is an example response:
       "text": "After obtaining the data for mass and extension, these values can be plotted on a graph. The slope of the line obtained allows for the calculation of Young's modulus through its relationship with tension and strain."
     },
     {
-      "fill_in_the_blank": "In this experiment, the extension [e] is plotted against the mass [m] on the graph to find the gradient, which is used to calculate [Young's modulus]."
+      "fill_in_the_blank": "In this experiment, the extension ([e]) is plotted against the mass ([m]) on the graph to find the gradient, which is used to calculate [Young's modulus/youngs modulus]."
     },
     {
-      "fill_in_the_blank": "The cross-sectional area [A] can be calculated using the formula [A = πD²/4], where [D] is the diameter of the wire."
+      "fill_in_the_blank": "The cross-sectional area (represented by the letter [A]) can be calculated using the formula A = πD²/[4], where [D] is the diameter of the wire."
     },
     {
       "fill_in_the_blank": "To ensure safety, it is important to wear [eye protection] while conducting this experiment, as the wire can store [energy] and may snap."
@@ -263,7 +271,11 @@ Here is an example response:
 
 def create_flashcard_deck(text_prompt, generation_method):
 
-    shared_instructions = """Each flashcard should have a simple front term and back definition. When necassary 
+    shared_instructions = """
+    You are an expert instructional designer generating flashcards for a learning platform targeted at 
+    UK students aged 15-18. For any given flashcard, here is the criteria:
+    
+    Each flashcard should have a simple front term and back definition. When necassary 
     or when you see fit, make sure to include a short and sweet explanation about why the definition matches 
     up to that specific term. Bear in mind that some users will want flashcards with translations from one 
     language to another, so make sure to include things such as cognates and sentence examples when appropriate. 
