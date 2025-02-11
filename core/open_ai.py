@@ -84,7 +84,20 @@ def create_lesson(text_prompt, generation_method):
     different to the correct answer; there cannot be two of the same option in any given question.
     It is important that each question is not too easy - answers should be similar in nature in order 
     to make it challenging, but not too similar that it becomes unclear which answer is correct, 
-    even if the user knows the answer. 
+    even if the user knows the answer. The incorrect answers must be plausible but incorrect. 
+    Ensure the distractors are relevant to the topic and designed to challenge users without being 
+    too easy or absurd. Where possible, distractors must reflect common misconceptions in order to 
+    increase difficulty. Based on user feedback, questions with distractor options like 'random guesses' 
+    are too easy. Generate a question with well-thought-out distractors that resemble real-world errors 
+    or misunderstandings. Here is an example of a good question based on the previously mentioned 
+    criteria:
+    
+    Which of the following explains why plants appear green under normal light conditions?
+    a) Green is absorbed by chlorophyll (distractor)
+    b) Chlorophyll reflects green light (correct)
+    c) Chlorophyll absorbs red and blue light but emits green (distractor)
+    d) All light except green is absorbed and stored (distractor)
+
     The string returned for each fill in the blank block must have the following syntax: 'Protons are 
     made up of two [up quarks/up] and one [down quark/down]', where each blank is represented 
     by a pair of square brackets, and inside the square brackets are the correct answers. 
@@ -145,6 +158,75 @@ def create_lesson(text_prompt, generation_method):
     1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5
   ]
 }
+
+Here is an example response:
+
+{
+  "blocks": [
+    {
+      "text": "This lesson will cover the concept of Young's modulus, which is a measure of the stiffness of a material. We will explore how to calculate Young's modulus by applying a force to a material and measuring its extension."
+    },
+    {
+      "question": "What is Young's modulus defined as?",
+      "wrong_answers": [
+        "The ratio of energy to strain",
+        "The total stress applied",
+        "The force divided by area"
+      ],
+      "correct_answer": "The ratio of tensile stress to tensile strain",
+      "explanation": "Young's modulus is the ratio of tensile stress (force per unit area) to tensile strain (the extension divided by the original length)."
+    },
+    {
+      "text": "To calculate stress, we divide the applied force by the cross-sectional area of the material. Strain is calculated as the extension of the material divided by its original length. The formula for Young's modulus combines these definitions."
+    },
+    {
+      "fill_in_the_blank": "Young's modulus, represented as [E], is equal to the ratio of [stress] to [strain]."
+    },
+    {
+      "text": "When measuring the extension of a wire, precise measurements of the diameter are essential for accurate calculations of the cross-sectional area. The equation for calculating the area from the diameter is Area = π * (Diameter² / 4)."
+    },
+    {
+      "question": "What does the equation for Young's modulus involve?",
+      "wrong_answers": [
+        "Area multiplied by stress",
+        "Force and total length combined",
+        "Strain times area"
+      ],
+      "correct_answer": "Tensile stress and tensile strain",
+      "explanation": "The Young's modulus equation involves dividing tensile stress by tensile strain to determine how much a material will deform under a certain stress."
+    },
+    {
+      "text": "In a typical experiment, a mass is added to a wire, causing it to extend. The extension is recorded, and the data can be plotted to find the gradient, which can then be used to calculate Young's modulus for the material."
+    },
+    {
+      "question": "What is the significance of measuring the extension accurately in this experiment?",
+      "wrong_answers": [
+        "To ensure the wire snaps",
+        "To determine the weight of the mass",
+        "To calculate the length of the wire"
+      ],
+      "correct_answer": "To reduce the percentage uncertainty in the measurements",
+      "explanation": "Accurate measurements of extension minimize the percentage uncertainty, leading to more reliable calculation of Young's modulus."
+    },
+    {
+      "text": "After obtaining the data for mass and extension, these values can be plotted on a graph. The slope of the line obtained allows for the calculation of Young's modulus through its relationship with tension and strain."
+    },
+    {
+      "fill_in_the_blank": "In this experiment, the extension [e] is plotted against the mass [m] on the graph to find the gradient, which is used to calculate [Young's modulus]."
+    },
+    {
+      "fill_in_the_blank": "The cross-sectional area [A] can be calculated using the formula [A = πD²/4], where [D] is the diameter of the wire."
+    },
+    {
+      "fill_in_the_blank": "To ensure safety, it is important to wear [eye protection] while conducting this experiment, as the wire can store [energy] and may snap."
+    }
+  ],
+  "sections": [
+    1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5
+  ]
+},
+
+
     """
 
     if generation_method == "video":

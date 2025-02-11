@@ -2,9 +2,11 @@ import os
 import random
 
 
-# Start the server with a random proxy port
-port = str("100" + str(random.randint(10, 99)))
+# Start the server with a random proxy port or the rotating port
+sticky_port = str("100" + str(random.randint(10, 99)))
 ROTATING_PORT = 7000
+
+# Confirm port number
 print(f"Using port {ROTATING_PORT}")
 
 # Environment variables
