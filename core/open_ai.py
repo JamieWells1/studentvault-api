@@ -107,11 +107,16 @@ def create_lesson(text_prompt, generation_method):
     d) All light except green is absorbed and stored (distractor)
 
     The string returned for each fill in the blank block must have the following syntax: 'Protons are 
-    made up of two [up quarks/up] and one [down quark/down]', where each blank is represented 
+    made up of two [up] quarks and one [down] quark', where each blank is represented 
     by a pair of square brackets, and inside the square brackets are the correct answers. 
     There can be more than one correct answer for each blank, and each correct answer should be 
     separated by a forward slash. There can be multiple blanks per string, but never add more than 
-    3 blanks to any given string. The lesson should take the user about 5 minutes to complete, and 
+    3 blanks to any given string. The blanks must always (except when filling in very specific keywords 
+    on vary rare occasions) consist of just 1 word (or number) per blank, otherwise it gets way too 
+    hard for the user. In blanks where there has there is grammar or capital letters, provide another 
+    option in that blank by separating it with a forward slash as shown below, because the user is unlikely 
+    to use correct grammar to fill in the blank, but they shouldn't have to get it wrong just because of that. 
+    The lesson should take the user about 5 minutes to complete, and 
     you must follow the following format with the same blocks in the same places: 
     
 {
@@ -220,13 +225,13 @@ Here is an example response:
       "text": "After obtaining the data for mass and extension, these values can be plotted on a graph. The slope of the line obtained allows for the calculation of Young's modulus through its relationship with tension and strain."
     },
     {
-      "fill_in_the_blank": "In this experiment, the extension ([e]) is plotted against the mass ([m]) on the graph to find the gradient, which is used to calculate [Young's modulus/youngs modulus]."
+      "fill_in_the_blank": "In this experiment, the extension ([e]) is plotted against the mass ([m]) on the graph to find the gradient, which is used to calculate Young's [modulus]."
     },
     {
       "fill_in_the_blank": "The cross-sectional area (represented by the letter [A]) can be calculated using the formula A = πD²/[4], where [D] is the diameter of the wire."
     },
     {
-      "fill_in_the_blank": "To ensure safety, it is important to wear [eye protection] while conducting this experiment, as the wire can store [energy] and may snap."
+      "fill_in_the_blank": "To ensure safety, it is important to wear [eye] protection while conducting this experiment, as the wire can store [energy] and may snap."
     }
   ],
   "sections": [
