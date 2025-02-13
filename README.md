@@ -1,4 +1,4 @@
-# YouTube Captions API
+# StudentVault Resource API
 
 This is a proprietary API designed to retrieve captions from YouTube videos using the YouTube Transcript API. This API allows you to send a request with a YouTube video ID, and it will return the captions for that video.
 
@@ -101,7 +101,7 @@ If there's an issue with retrieving captions (e.g., invalid URL, video doesn't s
 {
   "status": 400,
   "errors": [
-    "The video URL you provided either isn't a valid URL or the video doesn't support captions."
+    "Found 1 errors: The video URL you provided either isn't a valid URL or the video doesn't support captions."
   ]
 }
 ```

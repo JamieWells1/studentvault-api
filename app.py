@@ -11,8 +11,8 @@ app = Flask(__name__)
 @app.route("/create-with-ai/", methods=["POST"])
 def create_resource():
     data = request.get_json()
-    """
 
+    """
     example_request = {
         "video_id": "uNeyu46JtIk",
         "generation_method": "video",
