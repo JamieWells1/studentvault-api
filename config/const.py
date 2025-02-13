@@ -6,9 +6,6 @@ import random
 sticky_port = str("100" + str(random.randint(10, 99)))
 ROTATING_PORT = 7000
 
-# Confirm port number
-print(f"Using port {ROTATING_PORT}")
-
 # Environment variables
 __username = "spcjl3kcj6"
 __password = "P+s3l3g2xBXe5dlnRo"
