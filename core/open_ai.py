@@ -113,8 +113,8 @@ def create_lesson(text_prompt, generation_method):
     separated by a forward slash. There can be multiple blanks per string, but never add more than 
     3 blanks to any given string. The blanks must always (except when filling in very specific keywords 
     on vary rare occasions) consist of just 1 word (or number) per blank, otherwise it gets way too 
-    hard for the user. In blanks where there has there is grammar or capital letters, provide another 
-    option in that blank by separating it with a forward slash as shown below, because the user is unlikely 
+    hard for the user. In blanks where there should be grammar (e.g. apostrophies) and capital letters, 
+    add another option to each one which isn't case and grammar sensitive, because the user is unlikely 
     to use correct grammar to fill in the blank, but they shouldn't have to get it wrong just because of that. 
     The lesson should take the user about 5 minutes to complete, and 
     you must follow the following format with the same blocks in the same places: 
