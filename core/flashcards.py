@@ -3,8 +3,10 @@
 import re
 from typing import Dict, List
 
+from utils import logger
 
-REGEX_PATTERN = r"([^?-]+) - ([^;]+);"
+
+REGEX_PATTERN = r"(.+?) - (.+?)(?=;|$)"
 
 
 def extract(body) -> List[Dict]:
