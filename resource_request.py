@@ -19,9 +19,9 @@ video_ids = [
 selected_id = video_ids[random.randint(0, len(video_ids) - 1)]
 
 video_id = selected_id
-generation_method = "video"
+generation_method = "text"
 text_prompt = "Robert J. Oppenheimer"
-resource_type = "lesson"
+resource_type = "quiz"
 
 headers = {"Content-Type": "application/json"}
 body = {
