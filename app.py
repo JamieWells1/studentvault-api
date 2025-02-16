@@ -1,8 +1,6 @@
 import json
-from typing import Dict
 
 import core.business_logic as business_logic
-import core.flashcards as flashcards
 
 from flask import Flask, request
 
@@ -10,7 +8,6 @@ from flask import Flask, request
 app = Flask(__name__)
 
 
-# Endpoint for creating AI resources
 @app.route("/create-with-ai/", methods=["POST"])
 def create_resource():
     data = request.get_json()
@@ -33,17 +30,10 @@ def create_resource():
     )
 
     server = business_logic.Server(data)
+
     resource = server.generate()
 
     return json.dumps(resource)
-
-
-# Endpoint for extracting Quizlet flashcards
-@app.route("/extract-flashcards/", methods=["POST"])
-def extract_flashcards():
-    data = request.get_json()
-
-    flashcards: Dict[str, Dict] = flashcards.extract(data)
 
 
 def main():
