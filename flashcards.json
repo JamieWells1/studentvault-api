@@ -1,0 +1,10 @@
+{
+  "flashcard1": {
+    "front": "Nuclear fission",
+    "back": "The splitting of an atomic nucleus into smaller parts"
+  },
+  "flashcard2": {
+    "front": "Fission fragments",
+    "back": "The two smaller nuclei that result from the splitting of a heavy nucleus"
+  }
+}
