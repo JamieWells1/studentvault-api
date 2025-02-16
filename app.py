@@ -1,8 +1,10 @@
 import json
-from typing import Dict
+from typing import Dict, List
 
-import core.business_logic as business_logic
-import core.flashcards as flashcards
+from core import business_logic
+from core import flashcards
+from config.const import PROXY
+from utils import logger
 
 from flask import Flask, request
 
@@ -43,8 +45,11 @@ def create_resource():
 def extract_flashcards():
     data = request.get_json()
 
-    flashcards: Dict[str, Dict] = flashcards.extract(data)
+    extracted_flashcards: List[Dict] = flashcards.extract(data.get("body"))
+
+    return json.dumps(extracted_flashcards)
 
 
 def main():
+    logger.output(f"Running on proxy port {PROXY.get("port")}")
     app.run(host="0.0.0.0", port=8080)
