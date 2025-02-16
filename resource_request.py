@@ -2,8 +2,8 @@ import requests
 import json
 import random
 
-import tests.test_endpoint as endpoint
-from config.const import DEV_URL, PROD_URL
+from tests import test_endpoint
+from config.const import DEV_RESOURCE_URL, PROD_RESOURCE_URL
 
 
 video_ids = [
@@ -19,8 +19,8 @@ video_ids = [
 selected_id = video_ids[random.randint(0, len(video_ids) - 1)]
 
 video_id = selected_id
-generation_method = "video"
-text_prompt = ""
+generation_method = "text"
+text_prompt = "Robert J. Oppenheimer"
 resource_type = "quiz"
 
 headers = {"Content-Type": "application/json"}
@@ -31,7 +31,7 @@ body = {
     "resource_type": resource_type,
 }
 
-response = endpoint.send_request(DEV_URL, headers, body)
+response = test_endpoint.send_request(DEV_RESOURCE_URL, headers, body)
 
 print(
     f"\n========================== Response: ==========================\n\n{response.text}\n"

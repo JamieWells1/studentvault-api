@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 from core.error_handler import ErrorHandler
 import core.open_ai as open_ai
+from utils import logger
 
 
 @dataclass
@@ -18,11 +19,14 @@ class Server:
         self.data = data
 
     def __handle_resource_generation(self, text_prompt):
+        logger.output("Awaiting OpenAI response...")
+
         # Invoke the right method to create our AI resource
         if self.data.resource_type == "lesson":
             response = open_ai.create_lesson(
                 text_prompt=text_prompt, generation_method=self.data.generation_method
             )
+            logger.output("OpenAI response received")
             return {
                 "status": response["status"],
                 "resource_type": self.data.resource_type,
@@ -33,6 +37,7 @@ class Server:
             response = open_ai.create_mc_quiz(
                 text_prompt=text_prompt, generation_method=self.data.generation_method
             )
+            logger.output("OpenAI response received")
             return {
                 "status": response["status"],
                 "resource_type": self.data.resource_type,
@@ -43,6 +48,7 @@ class Server:
             response = open_ai.create_flashcard_deck(
                 text_prompt=text_prompt, generation_method=self.data.generation_method
             )
+            logger.output("OpenAI response received")
             return {
                 "status": response["status"],
                 "resource_type": self.data.resource_type,
@@ -56,7 +62,7 @@ class Server:
 
     def generate(self):
 
-        # Error handling
+        # Error handling, will also return YouTube captions if video_id == "video"
         errors = ErrorHandler(data=self.data)
         handler = errors.handle()
 
