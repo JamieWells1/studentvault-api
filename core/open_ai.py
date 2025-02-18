@@ -2,7 +2,7 @@ import json
 
 from config.const import OPENAI_API_KEY, OPENAI_MODEL
 import config.response_objects as models
-from utils.openai_context import Context
+from config.openai_context import Context
 
 from openai import OpenAI
 
