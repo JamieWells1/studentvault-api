@@ -6,7 +6,7 @@ class Context:
 
         SHARED = """
             You are an expert instructional designer generating lessons for a learning platform targeted at 
-            UK students aged 15-18. For any given lesson, here is the criteria:
+            UK students aged 15-18 studying towards their GCSEs and A-Levels respectively. For any given lesson, here is the criteria:
 
             The lesson will contain a mixture of text blocks (which you will use for explaining concepts), 
             multiple choice question blocks and fill in the blanks blocks. For each block, it will have a corresponding section 
@@ -96,72 +96,14 @@ class Context:
         ]
         }
 
-        Here is an example response:
+        Here are some example responses:
 
-        {
-        "blocks": [
-            {
-            "text": "This lesson will cover the concept of Young's modulus, which is a measure of the stiffness of a material. We will explore how to calculate Young's modulus by applying a force to a material and measuring its extension."
-            },
-            {
-            "question": "What is Young's modulus defined as?",
-            "wrong_answers": [
-                "The ratio of energy to strain",
-                "The total stress applied",
-                "The force divided by area"
-            ],
-            "correct_answer": "The ratio of tensile stress to tensile strain",
-            "explanation": "Young's modulus is the ratio of tensile stress (force per unit area) to tensile strain (the extension divided by the original length)."
-            },
-            {
-            "text": "To calculate stress, we divide the applied force by the cross-sectional area of the material. Strain is calculated as the extension of the material divided by its original length. The formula for Young's modulus combines these definitions."
-            },
-            {
-            "fill_in_the_blank": "Young's modulus, represented as [E], is equal to the ratio of [stress] to [strain]."
-            },
-            {
-            "text": "When measuring the extension of a wire, precise measurements of the diameter are essential for accurate calculations of the cross-sectional area. The equation for calculating the area from the diameter is Area = π * (Diameter² / 4)."
-            },
-            {
-            "question": "What does the equation for Young's modulus involve?",
-            "wrong_answers": [
-                "Area multiplied by stress",
-                "Force and total length combined",
-                "Strain times area"
-            ],
-            "correct_answer": "Tensile stress and tensile strain",
-            "explanation": "The Young's modulus equation involves dividing tensile stress by tensile strain to determine how much a material will deform under a certain stress."
-            },
-            {
-            "text": "In a typical experiment, a mass is added to a wire, causing it to extend. The extension is recorded, and the data can be plotted to find the gradient, which can then be used to calculate Young's modulus for the material."
-            },
-            {
-            "question": "What is the significance of measuring the extension accurately in this experiment?",
-            "wrong_answers": [
-                "To ensure the wire holds together",
-                "To determine the weight of the wire",
-                "To calculate the length of the wire"
-            ],
-            "correct_answer": "To reduce the percentage uncertainty in the measurements",
-            "explanation": "Accurate measurements of extension minimize the percentage uncertainty, leading to more reliable calculation of Young's modulus."
-            },
-            {
-            "text": "After obtaining the data for mass and extension, these values can be plotted on a graph. The slope of the line obtained allows for the calculation of Young's modulus through its relationship with tension and strain."
-            },
-            {
-            "fill_in_the_blank": "In this experiment, the extension ([e]) is plotted against the mass ([m]) on the graph to find the gradient, which is used to calculate Young's [modulus]."
-            },
-            {
-            "fill_in_the_blank": "The cross-sectional area (represented by the letter [A]) can be calculated using the formula A = πD²/[4], where [D] is the diameter of the wire."
-            },
-            {
-            "fill_in_the_blank": "To ensure safety, it is important to wear [eye] protection while conducting this experiment, as the wire can store [energy] and may snap."
-            }
-        ],
-        "sections": [
-            1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5
-        ]
-        },
+        {"blocks": [{"text": "This lesson will cover the concept of Young's modulus, which is a measure of the stiffness of a material. We will explore how to calculate Young's modulus by applying a force to a material and measuring its extension."}, {"question": "What is Young's modulus defined as?", "wrong_answers": ["The ratio of energy to strain", "The total stress applied", "The force divided by area"], "correct_answer": "The ratio of tensile stress to tensile strain", "explanation": "Young's modulus is the ratio of tensile stress (force per unit area) to tensile strain (the extension divided by the original length)."}, {"text": "To calculate stress, we divide the applied force by the cross-sectional area of the material. Strain is calculated as the extension of the material divided by its original length. The formula for Young's modulus combines these definitions."}, {"fill_in_the_blank": "Young's modulus, represented as [E], is equal to the ratio of [stress] to [strain]."}], "sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]}
+        {"blocks": [{"text": "This lesson introduces the concept of Newton's Laws of Motion. We will explore the three fundamental laws that govern motion and how forces interact with objects."}, {"question": "What does Newton's First Law state?", "wrong_answers": ["An object at rest will remain at rest forever.", "Force equals mass times acceleration.", "For every action, there is an equal and opposite reaction."], "correct_answer": "An object at rest stays at rest, and an object in motion stays in motion unless acted upon by an external force.", "explanation": "Newton's First Law describes inertia, stating that objects resist changes in motion unless influenced by an external force."}, {"text": "Newton's Second Law defines the relationship between force, mass, and acceleration using the formula F = ma. This law explains why objects with more mass require greater force to accelerate."}, {"fill_in_the_blank": "Newton's Second Law states that [force/F] equals [mass/m] times [acceleration/a]."}], "sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]}
+        {"blocks": [{"text": "This lesson explores the process of photosynthesis and how plants convert light energy into chemical energy. We will examine the key stages of this process and its importance in sustaining life on Earth."}, {"question": "Where does photosynthesis primarily occur?", "wrong_answers": ["In the roots", "In the mitochondria", "In the nucleus"], "correct_answer": "In the chloroplasts", "explanation": "Photosynthesis occurs in chloroplasts, where chlorophyll captures light energy to produce glucose."}, {"text": "Photosynthesis consists of the light-dependent reactions and the Calvin cycle, which together produce energy-rich molecules that fuel plant growth."}, {"fill_in_the_blank": "The pigment responsible for absorbing light in photosynthesis is [chlorophyll]."}], "sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]}
+        {"blocks": [{"text": "This lesson discusses the importance of the water cycle and its role in Earth's climate. We will explore evaporation, condensation, precipitation, and how water moves through the environment."}, {"question": "Which process involves water vapor cooling and forming droplets?", "wrong_answers": ["Evaporation", "Transpiration", "Sublimation"], "correct_answer": "Condensation", "explanation": "Condensation occurs when water vapor cools in the atmosphere, forming clouds and eventually precipitation."}, {"text": "Water cycles through different phases driven by solar energy and gravity, allowing for the continuous recycling of water on Earth."}, {"fill_in_the_blank": "The three main processes of the water cycle are [evaporation], [condensation], and [precipitation]."}], "sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]}
+        {"blocks": [{"text": "This lesson covers the fundamental properties of acids and bases, including the pH scale and how different substances react in acidic and basic solutions."}, {"question": "What pH value represents a neutral substance?", "wrong_answers": ["0", "5", "10"], "correct_answer": "7", "explanation": "A pH of 7 indicates neutrality, meaning a substance is neither acidic nor basic."}, {"text": "Acids donate hydrogen ions (H+), while bases accept them. The strength of an acid or base is measured using the pH scale, which ranges from 0 to 14."}, {"fill_in_the_blank": "A solution with a pH lower than [7] is considered [acidic]."}], "sections": [1, 1, 2, 2]}
+
         """
 
         TEXT = """
@@ -176,7 +118,7 @@ class Context:
 
         SHARED = """
             You are an expert instructional designer generating quizzes for a learning platform targeted at 
-            UK students aged 15-18. For any given quiz, here is the criteria:
+            UK students aged 15-18 studying towards their GCSEs and A-Levels respectively. For any given quiz, here is the criteria:
             
             Each multiple choice question must have exactly 3 
             wrong answers in the 'wrong_answers' list and each wrong answer must be
@@ -188,14 +130,19 @@ class Context:
             too easy or absurd. Where possible, distractors must reflect common misconceptions in order to 
             increase difficulty. Based on user feedback, questions with distractor options like 'random guesses' 
             are too easy. Generate a question with well-thought-out distractors that resemble real-world errors 
-            or misunderstandings. Here is an example of a good question based on the previously mentioned 
+            or misunderstandings. Here are some exemplar questions based on the previously mentioned 
             criteria:
             
-            Which of the following explains why plants appear green under normal light conditions?
-            a) Green is absorbed by chlorophyll (distractor)
-            b) Chlorophyll reflects green light (correct)
-            c) Chlorophyll absorbs red and blue light but emits green (distractor)
-            d) All light except green is absorbed and stored (distractor)
+            {"question": "Which of the following explains why plants appear green under normal light conditions?", "wrong_answers": ["Green is absorbed by chlorophyll", "Chlorophyll absorbs red and blue light but emits green", "All light except green is absorbed and stored"], "correct_answer": "Chlorophyll reflects green light", "explanation": "Chlorophyll absorbs red and blue light for photosynthesis but reflects green, making plants appear green."}
+            {"question": "What is the primary function of red blood cells?", "wrong_answers": ["Carrying out immune responses", "Producing hormones", "Digesting food particles"], "correct_answer": "Transporting oxygen", "explanation": "Red blood cells contain hemoglobin, which binds to oxygen and transports it throughout the body."}
+            {"question": "Which of the following best describes an oxidation reaction?", "wrong_answers": ["A reaction that gains electrons", "A reaction that loses protons", "A reaction that absorbs heat"], "correct_answer": "A reaction that loses electrons", "explanation": "Oxidation is the loss of electrons, often accompanied by the gain of oxygen or loss of hydrogen."}
+            {"question": "What is Newton's Third Law of Motion?", "wrong_answers": ["An object at rest stays at rest unless acted upon by a force", "Force equals mass times acceleration", "The energy in a system remains constant"], "correct_answer": "For every action, there is an equal and opposite reaction", "explanation": "Newton's Third Law states that forces always come in action-reaction pairs of equal magnitude and opposite direction."}
+            {"question": "Which part of the cell is responsible for energy production?", "wrong_answers": ["Nucleus", "Ribosome", "Golgi apparatus"], "correct_answer": "Mitochondria", "explanation": "Mitochondria are known as the powerhouse of the cell because they generate ATP through cellular respiration."}
+            {"question": "Which economic concept describes the satisfaction received from consuming a good?", "wrong_answers": ["Demand", "Opportunity cost", "Inflation"], "correct_answer": "Utility", "explanation": "Utility is the measure of satisfaction a consumer gets from consuming a product or service."}
+            {"question": "What is the function of the alveoli in the lungs?", "wrong_answers": ["Breaking down food particles", "Pumping oxygen into the heart", "Producing mucus to trap dust"], "correct_answer": "Exchanging oxygen and carbon dioxide", "explanation": "The alveoli are tiny air sacs in the lungs where gas exchange occurs between the bloodstream and air."}
+            {"question": "Why does the Moon not have an atmosphere?", "wrong_answers": ["It is too far from the Sun", "It is made entirely of rock", "It has too much gravity"], "correct_answer": "Its gravitational pull is too weak to retain gases", "explanation": "The Moon's weak gravity cannot hold onto a thick atmosphere, allowing gases to escape into space."}
+            {"question": "What is the primary cause of seasons on Earth?", "wrong_answers": ["The Earth's changing distance from the Sun", "The Earth's rotation on its axis", "The varying speed of Earth's orbit"], "correct_answer": "The tilt of the Earth's axis", "explanation": "Earth's axial tilt (about 23.5 degrees) causes different parts of the planet to receive varying sunlight intensity throughout the year, creating seasons."}
+            {"question": "Which of the following best describes the process of osmosis?", "wrong_answers": ["Movement of water against a concentration gradient", "Movement of solutes across a membrane", "Active transport of molecules"], "correct_answer": "Movement of water across a membrane from high to low water potential", "explanation": "Osmosis is the passive diffusion of water molecules through a selectively permeable membrane from a region of high to low water potential."}
             """
 
         TEXT = """
@@ -214,7 +161,7 @@ class Context:
 
         SHARED = """
             You are an expert instructional designer generating flashcards for a learning platform targeted at 
-            UK students aged 15-18. For any given flashcard, here is the criteria:
+            UK students aged 15-18 studying towards their GCSEs and A-Levels respectively. For any given flashcard, here is the criteria:
             
             Each flashcard should have a simple front term and back definition. When necassary 
             or when you see fit, make sure to include a short and sweet explanation about why the definition matches 
@@ -227,7 +174,33 @@ class Context:
             used in the derivation to visually differentiate steps and enhance understanding.' on the back, it should be 
             'purpose of using different colors in the derivation approach' on the front and 'visually differentiate steps and enhance 
             understanding' on the back. That way, the user can understand what the front of the flashcard is asking whilst 
-            not being overwhelmed with text. 
+            not being overwhelmed with text. Here are some exemplar flashcard decks based on the previously mentioned criteria:
+
+            {"front": "What is Newton's First Law of Motion?", "back": "An object in motion stays in motion unless acted on by a force."}
+            {"front": "What is the function of mitochondria?", "back": "Powerhouse of the cell; produces ATP for energy."}
+            {"front": "Define homeostasis", "back": "Maintaining a stable internal environment."}
+            {"front": "What is the difference between an acid and a base?", "back": "Acid donates H+ ions; base accepts H+ ions."}
+            {"front": "What is the formula for gravitational potential energy?", "back": "GPE = mgh (mass × gravity × height)."}
+            {"front": "What is the purpose of enzymes?", "back": "Speed up chemical reactions by lowering activation energy."}
+            {"front": "What does DNA stand for?", "back": "Deoxyribonucleic acid."}
+            {"front": "Define opportunity cost in economics", "back": "The next best alternative forgone when making a decision."}
+            {"front": "What is the difference between speed and velocity?", "back": "Velocity has direction; speed does not."}
+            {"front": "What are the three types of rocks?", "back": "Igneous, sedimentary, metamorphic."}
+            {"front": "What is the function of red blood cells?", "back": "Transport oxygen using hemoglobin."}
+            {"front": "Which gas makes up most of Earth's atmosphere?", "back": "Nitrogen (78%)."}
+            {"front": "What is the Pythagorean theorem?", "back": "a² + b² = c² (hypotenuse squared)."}
+            {"front": "Define diffusion", "back": "Movement of particles from high to low concentration."}
+            {"front": "What is the chemical formula for glucose?", "back": "C6H12O6."}
+            {"front": "What is the function of ribosomes?", "back": "Protein synthesis."}
+            {"front": "What is Hooke's Law?", "back": "Force is proportional to extension (F = kx)."}
+            {"front": "What are the primary colors of light?", "back": "Red, green, blue (RGB)."}
+            {"front": "What is the function of the ozone layer?", "back": "Absorbs harmful UV radiation from the Sun."}
+            {"front": "What is the SI unit of force?", "back": "Newton (N)."}
+            {"front": "What is the process of photosynthesis?", "back": "Plants convert light into glucose and oxygen."}
+            {"front": "What is the charge of an electron?", "back": "Negative (-1)."}
+            {"front": "Which part of the brain controls balance?", "back": "Cerebellum."}
+            {"front": "What is the function of the kidneys?", "back": "Filter waste from blood and produce urine."}
+            {"front": "Define refraction", "back": "Bending of light as it passes through different media."}
             """
 
         TEXT = """

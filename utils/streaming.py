@@ -14,10 +14,12 @@ client = OpenAI(api_key=OPENAI_API_KEY)
 def generate():
     try:
         stream = client.chat.completions.create(
-            response_format=models.Quiz,
             model="gpt-4o-mini",
             messages=[
-                {"role": "user", "content": "Write me a quiz about Rocket League"}
+                {
+                    "role": "user",
+                    "content": "Write me a poem about Smaug the Stupendous",
+                }
             ],
             stream=True,
         )
