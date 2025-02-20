@@ -9,7 +9,8 @@ class Context:
             UK students aged 15-18 studying towards their GCSEs and A-Levels respectively. For any given lesson, here is the criteria:
 
             The lesson will contain a mixture of text blocks (which you will use for explaining concepts), 
-            multiple choice question blocks and fill in the blanks blocks. For each block, it will have a corresponding section 
+            multiple choice question blocks and fill in the blanks blocks. Right from the start, each block should lead on from the previous 
+            block as a follow up so that the user is not confused and can follow the lesson easily. For each block, it will have a corresponding section 
             number, which will be in the 'sections' array. For example, if there are 12 items in the 'blocks' array, there must be 12 
             integers in the sections array, each one corresponding to its block counterpart. Each text block must contain 2-3 sentences, and 
             multiple choice questions must have exactly 3 wrong answers in the 'wrong_answers' list, and each wrong answer must be
@@ -21,14 +22,10 @@ class Context:
             too easy or absurd. Where possible, distractors must reflect common misconceptions in order to 
             increase difficulty. Based on user feedback, questions with distractor options like 'random guesses' 
             are too easy. Generate a question with well-thought-out distractors that resemble real-world errors 
-            or misunderstandings. Here is an example of a good question based on the previously mentioned 
+            or misunderstandings. Here is an exemplar question based on the previously mentioned 
             criteria:
             
-            Which of the following explains why plants appear green under normal light conditions?
-            a) Green is absorbed by chlorophyll (distractor)
-            b) Chlorophyll reflects green light (correct)
-            c) Chlorophyll absorbs red and blue light but emits green (distractor)
-            d) All light except green is absorbed and stored (distractor)
+            {"question": "Which of the following explains why plants appear green under normal light conditions?", "wrong_answers": ["Green is absorbed by chlorophyll", "Chlorophyll absorbs red and blue light but emits green", "All light except green is absorbed and stored"], "correct_answer": "Chlorophyll reflects green light", "explanation": "Chlorophyll absorbs red and blue light for photosynthesis but reflects green, making plants appear green."}
 
             The string returned for each fill in the blank block must have the following syntax: 'Protons are 
             made up of two [up] quarks and one [down] quark', where each blank is represented 
@@ -43,66 +40,61 @@ class Context:
             The lesson should take the user about 5 minutes to complete, and 
             you must follow the following format with the same blocks in the same places: 
             
-        {
-        "blocks": [
-            {
-            "text": "Introductory explanation"
-            },
-            {
-            "question": "question",
-            "wrong_answers": ["Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3"],
-            "correct_answer": "Correct Answer",
-            "explanation": "Explanation"
-            },
-            {
-            "text": "Explanation about Core Concept 1"
-            },
-            {
-            "fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"
-            },
-            {
-            "text": "Explanation about Core Concept 2"
-            },
-            {
-            "question": "question",
-            "wrong_answers": ["Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3"],
-            "correct_answer": "Correct Answer",
-            "explanation": "Explanation"
-            },
-            {
-            "text": "Explanation about Application Section"
-            },
-            {
-            "question": "question",
-            "wrong_answers": ["Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3"],
-            "correct_answer": "Correct Answer",
-            "explanation": "Explanation"
-            },
-            {
-            "text": "Explanation about Recap & Summary"
-            },
-            {
-            "fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"
-            },
-            {
-            "fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"
-            },
-            {
-            "fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"
-            }
-        ],
-        "sections": [
-            1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5
-        ]
-        }
+        {"blocks": [{"text": "quick introductory 2-3 sentences on the topic."},{"question": "question","wrong_answers": ["Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3"],"correct_answer": "Correct Answer","explanation": "Explanation"},{"text": "Explanation about Core Concept 1"},{"fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"},{"text": "Explanation about Core Concept 2"},{"question": "question","wrong_answers": ["Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3"],"correct_answer": "Correct Answer","explanation": "Explanation"},{"text": "Explanation about Application Section"},{"question": "question","wrong_answers": ["Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3"],"correct_answer": "Correct Answer","explanation": "Explanation"},{"text": "Explanation about Recap & Summary"},{"fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"},{"fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"},{"fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"}],"sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]}
 
         Here are some example responses:
 
-        {"blocks": [{"text": "This lesson will cover the concept of Young's modulus, which is a measure of the stiffness of a material. We will explore how to calculate Young's modulus by applying a force to a material and measuring its extension."}, {"question": "What is Young's modulus defined as?", "wrong_answers": ["The ratio of energy to strain", "The total stress applied", "The force divided by area"], "correct_answer": "The ratio of tensile stress to tensile strain", "explanation": "Young's modulus is the ratio of tensile stress (force per unit area) to tensile strain (the extension divided by the original length)."}, {"text": "To calculate stress, we divide the applied force by the cross-sectional area of the material. Strain is calculated as the extension of the material divided by its original length. The formula for Young's modulus combines these definitions."}, {"fill_in_the_blank": "Young's modulus, represented as [E], is equal to the ratio of [stress] to [strain]."}], "sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]}
-        {"blocks": [{"text": "This lesson introduces the concept of Newton's Laws of Motion. We will explore the three fundamental laws that govern motion and how forces interact with objects."}, {"question": "What does Newton's First Law state?", "wrong_answers": ["An object at rest will remain at rest forever.", "Force equals mass times acceleration.", "For every action, there is an equal and opposite reaction."], "correct_answer": "An object at rest stays at rest, and an object in motion stays in motion unless acted upon by an external force.", "explanation": "Newton's First Law describes inertia, stating that objects resist changes in motion unless influenced by an external force."}, {"text": "Newton's Second Law defines the relationship between force, mass, and acceleration using the formula F = ma. This law explains why objects with more mass require greater force to accelerate."}, {"fill_in_the_blank": "Newton's Second Law states that [force/F] equals [mass/m] times [acceleration/a]."}], "sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]}
-        {"blocks": [{"text": "This lesson explores the process of photosynthesis and how plants convert light energy into chemical energy. We will examine the key stages of this process and its importance in sustaining life on Earth."}, {"question": "Where does photosynthesis primarily occur?", "wrong_answers": ["In the roots", "In the mitochondria", "In the nucleus"], "correct_answer": "In the chloroplasts", "explanation": "Photosynthesis occurs in chloroplasts, where chlorophyll captures light energy to produce glucose."}, {"text": "Photosynthesis consists of the light-dependent reactions and the Calvin cycle, which together produce energy-rich molecules that fuel plant growth."}, {"fill_in_the_blank": "The pigment responsible for absorbing light in photosynthesis is [chlorophyll]."}], "sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]}
-        {"blocks": [{"text": "This lesson discusses the importance of the water cycle and its role in Earth's climate. We will explore evaporation, condensation, precipitation, and how water moves through the environment."}, {"question": "Which process involves water vapor cooling and forming droplets?", "wrong_answers": ["Evaporation", "Transpiration", "Sublimation"], "correct_answer": "Condensation", "explanation": "Condensation occurs when water vapor cools in the atmosphere, forming clouds and eventually precipitation."}, {"text": "Water cycles through different phases driven by solar energy and gravity, allowing for the continuous recycling of water on Earth."}, {"fill_in_the_blank": "The three main processes of the water cycle are [evaporation], [condensation], and [precipitation]."}], "sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]}
-        {"blocks": [{"text": "This lesson covers the fundamental properties of acids and bases, including the pH scale and how different substances react in acidic and basic solutions."}, {"question": "What pH value represents a neutral substance?", "wrong_answers": ["0", "5", "10"], "correct_answer": "7", "explanation": "A pH of 7 indicates neutrality, meaning a substance is neither acidic nor basic."}, {"text": "Acids donate hydrogen ions (H+), while bases accept them. The strength of an acid or base is measured using the pH scale, which ranges from 0 to 14."}, {"fill_in_the_blank": "A solution with a pH lower than [7] is considered [acidic]."}], "sections": [1, 1, 2, 2]}
+        {
+        "blocks": [
+            { "text": "Young's modulus is a fundamental property that measures a material's stiffness. It quantifies how much a material deforms under an applied tensile force, making it critical for engineering design." },
+            { "question": "What does Young's modulus measure?", "wrong_answers": ["The ratio of energy to strain", "The total stress applied", "The force divided by area"], "correct_answer": "The ratio of tensile stress to tensile strain", "explanation": "Young's modulus is defined as the ratio of tensile stress to tensile strain, indicating the stiffness of a material." },
+            { "text": "Core Concept 1: Stress is defined as the force per unit area, and strain is the deformation relative to the original length. These concepts form the basis for calculating Young's modulus." },
+            { "fill_in_the_blank": "Young's modulus (E) = [stress] / [strain]. Fill in the blanks with the definitions of stress and strain." },
+            { "text": "Core Concept 2: A material with a high Young's modulus is stiff, while one with a low modulus is more flexible. This property helps determine a material's suitability for different applications." },
+            { "question": "How is stress calculated in a material?", "wrong_answers": ["Force multiplied by area", "Area divided by force", "Force minus area"], "correct_answer": "Force divided by area", "explanation": "Stress is calculated by dividing the applied force by the cross-sectional area over which the force is distributed." },
+            { "text": "Application: Engineers use Young's modulus to select materials that will not deform excessively under load, ensuring safety and structural integrity in construction and manufacturing." },
+            { "question": "Why is Young's modulus important in engineering design?", "wrong_answers": ["It determines material color", "It measures thermal conductivity", "It calculates weight"], "correct_answer": "It predicts material deformation", "explanation": "Understanding Young's modulus allows engineers to predict how much a material will deform under a given load, which is essential for design." },
+            { "text": "Recap: Young's modulus is the ratio of tensile stress to tensile strain. It integrates the core concepts of stress and strain to provide a measure of material stiffness." },
+            { "fill_in_the_blank": "Young's modulus is represented by [E] and is calculated as [stress] divided by [strain]." },
+            { "fill_in_the_blank": "Stress is measured in [Pascals] while strain is a [dimensionless] quantity." },
+            { "fill_in_the_blank": "A higher Young's modulus indicates a [stiffer] material, whereas a lower modulus indicates a [more flexible] material." }
+        ],
+        "sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]
+        }
+        {
+        "blocks": [
+            { "text": "Newton's Laws of Motion form the foundation of classical mechanics. They describe how objects behave when forces act upon them, covering the principles of inertia, acceleration, and action-reaction." },
+            { "question": "What does Newton's First Law of Motion state?", "wrong_answers": ["An object at rest will remain at rest forever.", "Force equals mass times acceleration.", "For every action, there is an equal and opposite reaction."], "correct_answer": "An object at rest stays at rest, and an object in motion stays in motion unless acted upon by an external force.", "explanation": "Newton's First Law, also known as the law of inertia, explains that an object's state of motion does not change unless an external force intervenes." },
+            { "text": "Core Concept 1: Newton's First Law introduces the concept of inertia—the tendency of objects to resist changes in motion. This idea is fundamental for understanding subsequent laws of motion." },
+            { "fill_in_the_blank": "Newton's First Law can be summarized as: An object will remain in its [current] state of [motion] unless acted upon by an external force." },
+            { "text": "Core Concept 2: Newton's Second Law quantifies the relationship between force, mass, and acceleration. It shows that acceleration is directly proportional to the applied force and inversely proportional to mass." },
+            { "question": "What is the formula for Newton's Second Law?", "wrong_answers": ["F = m + a", "F = m/a", "F = a/m"], "correct_answer": "F = ma", "explanation": "Newton's Second Law is mathematically expressed as F = ma, meaning that the net force on an object equals its mass multiplied by its acceleration." },
+            { "text": "Application: Newton's Laws are used in diverse fields such as engineering, aerospace, and biomechanics to calculate forces and design systems that can withstand dynamic conditions." },
+            { "question": "How do Newton's Laws benefit modern engineering?", "wrong_answers": ["By determining chemical compositions", "By predicting electrical circuit behavior", "By analyzing sound frequencies"], "correct_answer": "By predicting structural forces", "explanation": "Engineers apply Newton's Laws to calculate forces acting on structures and vehicles, ensuring they are safe and efficient." },
+            { "text": "Recap: Newton's Laws—covering inertia, force, and action-reaction—offer a comprehensive framework for understanding motion and designing systems that perform reliably under force." },
+            { "fill_in_the_blank": "Newton's First Law is also known as the law of [inertia]." },
+            { "fill_in_the_blank": "Newton's Second Law is expressed as [F = ma]." },
+            { "fill_in_the_blank": "Newton's Third Law states that for every action there is an equal and opposite [reaction]." }
+        ],
+        "sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]
+        }
+        {
+        "blocks": [
+            { "text": "Photosynthesis is the process by which plants convert light energy into chemical energy. This process is vital not only for plant growth but also for providing oxygen and forming the base of food chains." },
+            { "question": "Where does photosynthesis primarily occur in plant cells?", "wrong_answers": ["In the roots", "In the mitochondria", "In the nucleus"], "correct_answer": "In the chloroplasts", "explanation": "Photosynthesis takes place in the chloroplasts, where chlorophyll absorbs light to convert carbon dioxide and water into glucose and oxygen." },
+            { "text": "Core Concept 1: The light-dependent reactions capture sunlight and convert it into chemical energy in the form of ATP and NADPH. These reactions occur within the thylakoid membranes of the chloroplast." },
+            { "fill_in_the_blank": "During the light-dependent reactions, light energy is absorbed by [chlorophyll] located in the chloroplasts." },
+            { "text": "Core Concept 2: The Calvin cycle (light-independent reactions) uses the ATP and NADPH produced in the light reactions to convert carbon dioxide into sugars, primarily glucose." },
+            { "question": "What is the primary purpose of the Calvin cycle?", "wrong_answers": ["To produce oxygen", "To generate ATP", "To capture light energy"], "correct_answer": "To fix carbon into sugars", "explanation": "The Calvin cycle uses chemical energy to convert carbon dioxide into organic compounds like glucose, which are vital for plant growth." },
+            { "text": "Application: Insights into photosynthesis help improve agricultural practices and renewable energy research. Optimizing this process can lead to enhanced crop yields and the development of bioenergy solutions." },
+            { "question": "How can a better understanding of photosynthesis benefit agriculture?", "wrong_answers": ["By enhancing soil pH", "By reducing water usage", "By altering plant color"], "correct_answer": "By increasing crop yield", "explanation": "Advances in photosynthesis research can lead to more efficient plant growth and higher crop productivity." },
+            { "text": "Recap: Photosynthesis converts light energy into chemical energy through two main stages: the light-dependent reactions and the Calvin cycle. This process is essential for sustaining life on Earth." },
+            { "fill_in_the_blank": "Photosynthesis converts [light energy] into [chemical energy]." },
+            { "fill_in_the_blank": "The primary pigment responsible for absorbing light in photosynthesis is [chlorophyll]." },
+            { "fill_in_the_blank": "Photosynthesis occurs mainly in the [chloroplasts] of plant cells." }
+        ],
+        "sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]
+        }
 
         """
 
@@ -180,7 +172,7 @@ class Context:
             {"front": "What is the function of mitochondria?", "back": "Powerhouse of the cell; produces ATP for energy."}
             {"front": "Define homeostasis", "back": "Maintaining a stable internal environment."}
             {"front": "What is the difference between an acid and a base?", "back": "Acid donates H+ ions; base accepts H+ ions."}
-            {"front": "What is the formula for gravitational potential energy?", "back": "GPE = mgh (mass × gravity × height)."}
+            {"front": "What is the formula for gravitational potential energy?", "back": "GPE = mgh (mass x gravity x height)."}
             {"front": "What is the purpose of enzymes?", "back": "Speed up chemical reactions by lowering activation energy."}
             {"front": "What does DNA stand for?", "back": "Deoxyribonucleic acid."}
             {"front": "Define opportunity cost in economics", "back": "The next best alternative forgone when making a decision."}
