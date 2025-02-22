@@ -9,7 +9,7 @@ from pydantic import BaseModel
 class MultipleChoiceQuestion(BaseModel):
     question: str
     wrong_answers: list[str]
-    correct_answers: list[str]
+    correct_answer: str
     explanation: str
 
 
@@ -31,6 +31,7 @@ class Flashcard(BaseModel):
 
 class Lesson(BaseModel):
     blocks: list[Union[Text, FillInTheBlanksQuestion, MultipleChoiceQuestion]]
+    block_sections: list[int]
 
 
 class FlashcardDeck(BaseModel):
@@ -39,3 +40,7 @@ class FlashcardDeck(BaseModel):
 
 class Quiz(BaseModel):
     questions: list[MultipleChoiceQuestion]
+
+
+class Module(BaseModel):
+    sections: list[Union[Lesson, Quiz, FlashcardDeck]]

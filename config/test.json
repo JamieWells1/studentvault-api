@@ -1,0 +1,62 @@
+{
+  "status": 200,
+  "resource_type": "lesson",
+  "payload": {
+    "blocks": [
+      {
+        "text": "Ohm's Law is a fundamental principle in electronics and physics, stating the relationship between voltage, current, and resistance in electrical circuits. It helps us understand how electric current behaves in different components and is crucial for designing and analyzing circuits."
+      },
+      {
+        "question": "What does Ohm's Law relate to in an electrical circuit?",
+        "wrong_answers": [
+          "Voltage and capacitance",
+          "Energy and temperature",
+          "Resistance and power"
+        ],
+        "correct_answer": "Voltage, current, and resistance",
+        "explanation": "Ohm's Law describes the relationship between voltage (V), current (I), and resistance (R) in electrical circuits, summarized by the formula V = I \u00d7 R."
+      },
+      {
+        "text": "Core Concept 1: Voltage is the electrical potential difference between two points, measured in volts (V). It indicates how much energy is carried by each unit of electric charge."
+      },
+      {
+        "fill_in_the_blank": "Voltage is defined as the [potential] difference between two points and is measured in [volts]."
+      },
+      {
+        "text": "Core Concept 2: The current is the flow of electric charge through a conductor, measured in amperes (A). Current is directly dependent on both voltage and resistance, as dictated by Ohm's Law."
+      },
+      {
+        "question": "What is the unit of electric current?",
+        "wrong_answers": ["Volts", "Ohms", "Watts"],
+        "correct_answer": "Amperes",
+        "explanation": "Electric current is measured in amperes (A), which indicates the number of coulombs passing through a conductor per second."
+      },
+      {
+        "text": "Application: Understanding Ohm's Law allows engineers and technicians to diagnose issues in electrical circuits, calculate necessary component values, and ensure the safety and efficiency of electrical systems."
+      },
+      {
+        "question": "How can Ohm's Law aid in circuit design?",
+        "wrong_answers": [
+          "By predicting chemical reactions",
+          "By measuring sound frequencies",
+          "By determining light intensity"
+        ],
+        "correct_answer": "By calculating voltage, current, and resistance values",
+        "explanation": "Ohm's Law enables designers to determine the appropriate values for voltage, current, and resistance in circuits for optimal performance."
+      },
+      {
+        "text": "Recap: Ohm's Law is encapsulated in the formula V = I \u00d7 R, linking voltage, current, and resistance together. Mastery of this law is essential for success in physics and electrical engineering."
+      },
+      {
+        "fill_in_the_blank": "Ohm's Law can be summarized with the formula [V = I \u00d7 R]."
+      },
+      {
+        "fill_in_the_blank": "The resistance in a circuit is measured in [Ohms]."
+      },
+      {
+        "fill_in_the_blank": "Current is a measure of [electric] charge flow and is measured in [amperes]."
+      }
+    ],
+    "block_sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]
+  }
+}

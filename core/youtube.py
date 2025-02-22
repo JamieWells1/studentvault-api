@@ -21,6 +21,6 @@ class Youtube:
             return {"status": 200, "captions": captions, "errors": []}
 
         except Exception as e:
-            errors.append(self.error_messages["invalid_url"], str(e))
+            errors.append(str(e))
 
         return {"status": 400, "errors": errors}

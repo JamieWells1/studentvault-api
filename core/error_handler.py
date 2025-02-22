@@ -3,6 +3,7 @@ from core.youtube import Youtube
 from typing import List
 
 from config.const import GENERATION_METHODS, RESOURCE_TYPES
+from utils import logger
 
 
 class ErrorHandler:
@@ -33,17 +34,14 @@ class ErrorHandler:
     def __handle_get_captions(self) -> List[str]:
         youtube_handler = Youtube(video_id=self.data.video_id)
 
+        logger.output("Awaiting YouTube captions response...")
         captions_response = youtube_handler.get_captions()
 
         if captions_response["errors"]:
             return {"status": 400, "errors": captions_response["errors"]}
 
+        logger.output("Fetched YouTube captions")
         return {"status": 200, "captions": captions_response["captions"]}
-
-    def __handle_openai_errors(self) -> List[str]:
-        errors = []
-
-        return errors
 
     # Parent handler
 
@@ -62,9 +60,6 @@ class ErrorHandler:
                 return {"status": 400, "errors": errors}
 
             return {"status": 200, "payload": captions_response}
-
-        # Handle errors when forming OpenAI response
-        errors.extend(self.__handle_openai_errors())
 
         if errors:
             return {"status": 400, "errors": errors}
