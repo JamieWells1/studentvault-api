@@ -119,27 +119,31 @@ def create_flashcard_deck(text_prompt, generation_method):
 # model, which is ~100x more expensive than 4o-mini as of 18/02/2025 ($15, $30 per 1M tokens input, output)
 def resource_from_image():
 
-    shared_instructions = Context.Quiz.SHARED
-    instructions = Context.Quiz.TEXT
+    context = """
+        What's in this photo?
+        """
 
     try:
         response = client.beta.chat.completions.parse(
             messages=[
                 {
-                    "role": "system",
-                    "content": instructions + shared_instructions,
-                },
-                {
                     "role": "user",
-                    "content": text_prompt,
-                },
+                    "content": [
+                        {"type": "text", "text": context},
+                        {
+                            "type": "image_url",
+                            "image_url": {
+                                "url": "",
+                            },
+                        },
+                    ],
+                }
             ],
-            model=OPENAI_MODEL,
-            response_format=models.Quiz,
+            model="gpt-4o",
         )
 
-        quiz = json.loads(response.choices[0].message.content)
-        return {"status": 200, "payload": quiz}
+        response = response.choices[0].message.content
+        return {"status": 200, "payload": response}
 
     except Exception as e:
         return {"status": 400, "payload": e}

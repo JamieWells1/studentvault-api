@@ -1,6 +1,11 @@
+import logging
+
 from config.const import PROXY
 
 from youtube_transcript_api import YouTubeTranscriptApi
+
+
+logger = (getLogger(__name__),)
 
 
 class Youtube:
@@ -22,5 +27,7 @@ class Youtube:
 
         except Exception as e:
             errors.append(str(e))
+            logger.info(str(e))
+            raise e
 
         return {"status": 400, "errors": errors}
