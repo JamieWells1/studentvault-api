@@ -11,8 +11,8 @@ class Context:
             The lesson will contain a mixture of text blocks (which you will use for explaining concepts), 
             multiple choice question blocks and fill in the blanks blocks. Right from the start, each block should lead on from the previous 
             block as a follow up so that the user is not confused and can follow the lesson easily. For each block, it will have a corresponding section 
-            number, which will be in the 'sections' array. For example, if there are 12 items in the 'blocks' array, there must be 12 
-            integers in the sections array, each one corresponding to its block counterpart. Each text block must contain 2-3 sentences, and 
+            number and block type, which will be in the 'sections' and 'block_types' arrays respectively. For example, if there are 12 items in the 'blocks' array, there must be 12 
+            integers in the sections and block_types arrays, each one corresponding to its block counterpart. Each text block must contain 2-3 sentences, and 
             multiple choice questions must have exactly 3 wrong answers in the 'wrong_answers' list, and each wrong answer must be
             different to the correct answer; there cannot be two of the same option in any given question.
             It is important that each question is not too easy - answers should be similar in nature in order 
@@ -40,7 +40,7 @@ class Context:
             The lesson should take the user about 5 minutes to complete, and 
             you must follow the following format with the same blocks in the same places: 
             
-        {"blocks": [{"text": "quick introductory 2-3 sentences on the topic."},{"question": "question","wrong_answers": ["Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3"],"correct_answer": "Correct Answer","explanation": "Explanation"},{"text": "Explanation about Core Concept 1"},{"fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"},{"text": "Explanation about Core Concept 2"},{"question": "question","wrong_answers": ["Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3"],"correct_answer": "Correct Answer","explanation": "Explanation"},{"text": "Explanation about Application Section"},{"question": "question","wrong_answers": ["Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3"],"correct_answer": "Correct Answer","explanation": "Explanation"},{"text": "Explanation about Recap & Summary"},{"fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"},{"fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"},{"fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"}],"sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]}
+        {"blocks": [{"text": "quick introductory 2-3 sentences on the topic."},{"question": "question","wrong_answers": ["Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3"],"correct_answer": "Correct Answer","explanation": "Explanation"},{"text": "Explanation about Core Concept 1"},{"fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"},{"text": "Explanation about Core Concept 2"},{"question": "question","wrong_answers": ["Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3"],"correct_answer": "Correct Answer","explanation": "Explanation"},{"text": "Explanation about Application Section"},{"question": "question","wrong_answers": ["Wrong Answer 1", "Wrong Answer 2", "Wrong Answer 3"],"correct_answer": "Correct Answer","explanation": "Explanation"},{"text": "Explanation about Recap & Summary"},{"fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"},{"fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"},{"fill_in_the_blank": "String for fill in the [blank/blanks] with multiple [blank/blanks]"}],"sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5], "block_types": ["text", "question", "text", "fill_in_the_blank", "text", "question", "text", "question", "text", "fill_in_the_blank", "fill_in_the_blank", "fill_in_the_blank"]}
 
         Here are some example responses:
 
@@ -59,7 +59,8 @@ class Context:
             { "fill_in_the_blank": "Stress is measured in [Pascals] while strain is a [dimensionless] quantity." },
             { "fill_in_the_blank": "A higher Young's modulus indicates a [stiffer] material, whereas a lower modulus indicates a [more flexible] material." }
         ],
-        "sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]
+        "sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5],
+        "block_types": ["text", "question", "text", "fill_in_the_blank", "text", "question", "text", "question", "text", "fill_in_the_blank", "fill_in_the_blank", "fill_in_the_blank"]
         }
         {
         "blocks": [
@@ -77,6 +78,7 @@ class Context:
             { "fill_in_the_blank": "Newton's Third Law states that for every action there is an equal and opposite [reaction]." }
         ],
         "sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]
+        "block_types": ["text", "question", "text", "fill_in_the_blank", "text", "question", "text", "question", "text", "fill_in_the_blank", "fill_in_the_blank", "fill_in_the_blank"]
         }
         {
         "blocks": [
@@ -94,6 +96,7 @@ class Context:
             { "fill_in_the_blank": "Photosynthesis occurs mainly in the [chloroplasts] of plant cells." }
         ],
         "sections": [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 5]
+        "block_types": ["text", "question", "text", "fill_in_the_blank", "text", "question", "text", "question", "text", "fill_in_the_blank", "fill_in_the_blank", "fill_in_the_blank"]
         }
 
         """
