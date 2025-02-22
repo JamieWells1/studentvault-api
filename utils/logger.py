@@ -1,2 +1,2 @@
 def output(text):
-    print(f"\n================== {text} ===================\n")
+    print(f"\n=> {text} ")

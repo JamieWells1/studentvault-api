@@ -3,7 +3,14 @@ import random
 
 
 # Start the server with a random proxy port or the rotating port
-sticky_port = str("100" + str(random.randint(10, 99)))
+port_num = str(random.randint(1, 999))
+if len(port_num) == 1:
+    sticky_port = "1000" + port_num
+elif len(port_num) == 2:
+    sticky_port = "100" + port_num
+elif len(port_num) == 3:
+    sticky_port = "10" + port_num
+
 ROTATING_PORT = 7000
 
 
