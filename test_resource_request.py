@@ -18,10 +18,10 @@ video_ids = [
 # If video_id should be none this is a placeholder
 selected_id = video_ids[random.randint(0, len(video_ids) - 1)]
 
-video_id = selected_id
-generation_method = "text"
+video_id = "P_ckAbOr0r4"
+generation_method = "video"
 text_prompt = "Ohm's Law GCSE Physics"
-resource_type = "lesson"
+resource_type = "flashcard_deck"
 
 headers = {"Content-Type": "application/json"}
 body = {
