@@ -59,11 +59,14 @@ def generate_image():
     example_request = {
         "topic": "Hooke's Law",
         "custom_prompt": "A car suspension system absorbing impact.",
+        "prompt_type": "topic",
     }
     """
 
     response = ai_images.generate_image(
-        topic=data.get("topic"), custom_prompt=data.get("custom_prompt")
+        topic=data.get("topic"),
+        custom_prompt=data.get("custom_prompt"),
+        prompt_type=data.get("prompt_type"),
     )
 
     return json.dumps(response)

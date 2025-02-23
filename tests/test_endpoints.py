@@ -29,6 +29,8 @@ def test_create_resource():
     logger.output(f"Status Code: {response.status_code}")
     logger.output(f"Response: {json.dumps(response.json(), indent=2)}")
 
+    return response
+
 
 def test_extract_flashcards():
     """Test the /extract-flashcards/ endpoint"""
@@ -47,18 +49,25 @@ def test_extract_flashcards():
     logger.output(f"Status Code: {response.status_code}")
     logger.output(f"Response: {json.dumps(response.json(), indent=2)}")
 
+    return response
+
 
 def test_generate_image():
     """Test the /generate-image/ endpoint"""
     url = f"{BASE_URL}/generate-image/"
 
     # Test with topic
-    topic_payload = {"topic": "Hooke's Law", "custom_prompt": None}
+    topic_payload = {
+        "topic": "Hooke's Law",
+        "custom_prompt": "",
+        "prompt_type": "topic",
+    }
 
     # Test with custom prompt
     custom_prompt_payload = {
-        "topic": None,
+        "topic": "",
         "custom_prompt": "A car suspension system absorbing impact.",
+        "prompt_type": "custom_prompt",
     }
 
     logger.output("Generate Image Test (Topic)")
@@ -71,6 +80,8 @@ def test_generate_image():
     logger.output(f"Status Code: {response.status_code}")
     logger.output(f"Response: {json.dumps(response.json(), indent=2)}")
 
+    return response
+
 
 if __name__ == "__main__":
     # Make sure your Flask server is running before running these tests
@@ -79,16 +90,22 @@ if __name__ == "__main__":
     tests_passed = 0
 
     try:
-        test_create_resource()
-        tests_passed += 1
-        test_extract_flashcards()
-        tests_passed += 1
-        test_generate_image()
-        tests_passed += 1
+        response = test_create_resource()
+        if response.status_code == 200:
+            tests_passed += 1
+
+        response = test_extract_flashcards()
+        if response.status_code == 200:
+            tests_passed += 1
+
+        response = test_generate_image()
+        if response.status_code == 200:
+            tests_passed += 1
+
     except requests.exceptions.ConnectionError:
-        logger.error("\nError: Could not connect to the server.")
+        logger.error("Could not connect to the server.")
         logger.output("Make sure your Flask server is running on http://localhost:8080")
     except Exception as e:
-        logger.error(f"\nError occurred: {e}")
+        logger.error(f"{e}")
 
-    logger.output(f"\nTests passed: {tests_passed}/3")
+    logger.output(f"Tests passed: {tests_passed}/3")

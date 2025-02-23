@@ -1,13 +1,18 @@
+import os
+from typing import Dict
+
 from config.const import REPLICATE_MODEL, REPLICATE_API_KEY
 from utils import logger
 
-from typing import Dict
-
 import replicate
+
+ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
 
 
 # Either topic or custom_prompt must be provided
-def generate_image(topic: str = None, custom_prompt: str = None) -> Dict[str, str]:
+def generate_image(
+    topic: str = "", custom_prompt: str = "", prompt_type: str = "topic"
+) -> Dict[str, str]:
     client = replicate.Client(api_token=REPLICATE_API_KEY)
 
     try:
@@ -15,7 +20,7 @@ def generate_image(topic: str = None, custom_prompt: str = None) -> Dict[str, st
             REPLICATE_MODEL,
             input={
                 "seed": 0,
-                "prompt": get_prompt(topic, custom_prompt),
+                "prompt": get_prompt(topic, custom_prompt, prompt_type),
                 "go_fast": True,
                 "megapixels": "1",
                 "num_outputs": 1,
@@ -25,16 +30,25 @@ def generate_image(topic: str = None, custom_prompt: str = None) -> Dict[str, st
                 "num_inference_steps": 4,
             },
         )
+
+        if ENVIRONMENT == "production":
+            image_url = output[0]
+        else:
+            image_url = output[0].url
+        logger.output(f"Image URL: {image_url}")
+
     except Exception as e:
         logger.error(f"{e}")
     else:
-        return {"status": 200, "image_url": output[0]}
+        return {"status": 200, "image_url": image_url}
 
     return {"status": 400, "error": "Failed to generate image"}
 
 
-def get_prompt(topic: str, custom_prompt: str = None) -> str:
-    if custom_prompt:
+def get_prompt(
+    topic: str, custom_prompt: str = None, prompt_type: str = "topic"
+) -> str:
+    if custom_prompt and prompt_type == "custom_prompt":
         return f"""
         A highly detailed, photorealistic image of {custom_prompt}. 
         The image should capture a practical, real-life scenario where this concept is naturally observed. 
@@ -55,7 +69,7 @@ def get_prompt(topic: str, custom_prompt: str = None) -> str:
         These examples should not influence your image—only ensure that the generated image follows the same level 
         of photorealism, clarity, and realism.
         """
-    elif topic and not custom_prompt:
+    elif topic and prompt_type == "topic":
         return f"""
         A highly detailed, photorealistic image of a real-world application of {topic}. 
         The image should capture a practical, real-life scenario where this concept is naturally observed. 
