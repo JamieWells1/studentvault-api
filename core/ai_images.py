@@ -31,6 +31,8 @@ def generate_image(
             },
         )
 
+        # If the environment is production, output[0] is the image URL
+        # If the environment is development, output[0] is the image object
         if ENVIRONMENT == "production":
             image_url = output[0]
         else:

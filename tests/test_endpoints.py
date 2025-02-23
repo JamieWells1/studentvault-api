@@ -84,7 +84,6 @@ def test_generate_image():
 
 
 if __name__ == "__main__":
-    # Make sure your Flask server is running before running these tests
     logger.output("Running endpoint tests...")
 
     tests_passed = 0
