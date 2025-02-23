@@ -28,7 +28,7 @@ def generate_image(topic: str = None, custom_prompt: str = None) -> Dict[str, st
     except Exception as e:
         logger.error(f"{e}")
     else:
-        return {"status": 200, "image_url": output[0].url}
+        return {"status": 200, "image_url": output[0]}
 
     return {"status": 400, "error": "Failed to generate image"}
 
