@@ -44,7 +44,7 @@ def generate_image(
     else:
         return {"status": 200, "image_url": image_url}
 
-    return {"status": 400, "error": "Failed to generate image"}
+    return {"status": 400, "error": f"Failed to generate image: {e}"}
 
 
 def get_prompt(
