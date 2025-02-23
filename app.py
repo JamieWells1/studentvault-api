@@ -3,6 +3,7 @@ from typing import Dict, List
 
 from core import business_logic
 from core import flashcards
+from core import ai_images
 from config.const import PROXY
 from utils import logger
 
@@ -48,6 +49,15 @@ def extract_flashcards():
     extracted_flashcards: List[Dict] = flashcards.extract(data.get("body"))
 
     return json.dumps(extracted_flashcards)
+
+
+@app.route("/generate-image/", methods=["POST"])
+def generate_image():
+    data = request.get_json()
+
+    response = ai_images.generate_image(data.get("topic"))
+
+    return json.dumps(response)
 
 
 def main():

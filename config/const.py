@@ -36,10 +36,11 @@ PROD_EXTRACT_FLASHCARDS_URL = (
 )
 
 
-# OpenAI environment variables and model
+# Environment variables and models
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
+REPLICATE_API_KEY = os.environ.get("REPLICATE_API_KEY")
 OPENAI_MODEL = "gpt-4o-mini"
-
+REPLICATE_MODEL = "black-forest-labs/flux-schnell"
 
 # Enums available to server
 GENERATION_METHODS = ["text", "video"]

@@ -23,11 +23,14 @@ class Youtube:
             )
             captions = " ".join([item["text"] for item in transcript])
 
-            return {"status": 200, "captions": captions, "errors": []}
+            if len(captions) > 30000:
+                raise Exception("Video too long. Try again with a different video.")
 
         except Exception as e:
             errors.append(str(e))
-            logger.info(str(e))
-            raise e
+            logger.error(str(e))
+
+        else:
+            return {"status": 200, "captions": captions, "errors": []}
 
         return {"status": 400, "errors": errors}

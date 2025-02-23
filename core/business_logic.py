@@ -1,4 +1,3 @@
-import json
 from dataclasses import dataclass
 
 from core.error_handler import ErrorHandler
