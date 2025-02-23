@@ -55,7 +55,16 @@ def extract_flashcards():
 def generate_image():
     data = request.get_json()
 
-    response = ai_images.generate_image(data.get("topic"))
+    """
+    example_request = {
+        "topic": "Hooke's Law",
+        "custom_prompt": "A car suspension system absorbing impact.",
+    }
+    """
+
+    response = ai_images.generate_image(
+        topic=data.get("topic"), custom_prompt=data.get("custom_prompt")
+    )
 
     return json.dumps(response)
 
