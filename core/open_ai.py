@@ -115,35 +115,27 @@ def create_flashcard_deck(text_prompt, generation_method):
         return {"status": 400, "payload": e}
 
 
-# Creates resource from an image. This is currently not being used in production as this uses the vision
-# model, which is ~100x more expensive than 4o-mini as of 18/02/2025 ($15, $30 per 1M tokens input, output)
-def resource_from_image():
-
-    context = """
-        What's in this photo?
-        """
+def answer_question(question, lesson_context):
+    instructions = Context.Answer.INSTRUCTIONS
 
     try:
         response = client.beta.chat.completions.parse(
             messages=[
                 {
+                    "role": "system",
+                    "content": instructions,
+                },
+                {
                     "role": "user",
-                    "content": [
-                        {"type": "text", "text": context},
-                        {
-                            "type": "image_url",
-                            "image_url": {
-                                "url": "",
-                            },
-                        },
-                    ],
-                }
+                    "content": f"""question: {question}, lesson_context: {lesson_context}""",
+                },
             ],
-            model="gpt-4o",
+            model=OPENAI_MODEL,
+            response_format=models.Answer,
         )
 
-        response = response.choices[0].message.content
-        return {"status": 200, "payload": response}
+        answer = json.loads(response.choices[0].message.content)
+        return {"status": 200, "payload": answer}
 
     except Exception as e:
         return {"status": 400, "payload": e}

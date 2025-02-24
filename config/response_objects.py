@@ -45,3 +45,9 @@ class Quiz(BaseModel):
 
 class Module(BaseModel):
     sections: list[Union[Lesson, Quiz, FlashcardDeck]]
+
+
+class Answer(BaseModel):
+    explanation: str
+    practice_question: MultipleChoiceQuestion
+    follow_up_output: str

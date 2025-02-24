@@ -17,8 +17,8 @@ def extract(body) -> List[Dict]:
     """
 
     raw_flashcards = re.findall(REGEX_PATTERN, body)
-    flashcard_fronts = [front.strip() for front, back in raw_flashcards]
-    flashcard_backs = [back.strip() for front, back in raw_flashcards]
+    flashcard_fronts = [front.strip() for front in raw_flashcards]
+    flashcard_backs = [back.strip() for back in raw_flashcards]
 
     flashcards = []
 

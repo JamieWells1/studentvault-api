@@ -6,6 +6,7 @@ from core import flashcards
 from core import ai_images
 from config.const import PROXY
 from utils import logger
+from core import open_ai
 
 from flask import Flask, request
 
@@ -67,6 +68,18 @@ def generate_image():
         topic=data.get("topic"),
         custom_prompt=data.get("custom_prompt"),
         prompt_type=data.get("prompt_type"),
+    )
+
+    return json.dumps(response)
+
+
+@app.route("/answer-question/", methods=["POST"])
+def answer_question():
+    data = request.get_json()
+
+    response = open_ai.answer_question(
+        question=data.get("question"),
+        lesson_context=data.get("lesson_context"),
     )
 
     return json.dumps(response)
