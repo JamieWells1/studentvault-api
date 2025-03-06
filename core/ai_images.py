@@ -52,42 +52,49 @@ def get_prompt(
 ) -> str:
     if custom_prompt and prompt_type == "custom_prompt":
         return f"""
-            Generate a highly detailed, photorealistic image of {custom_prompt}.
-            The image must accurately depict only what is described in {custom_prompt} and nothing else. Do not incorporate elements from unrelated concepts, contexts, or prior examples.
+        A highly detailed, photorealistic image of {custom_prompt}. 
+        The image should capture a practical, real-life scenario where this concept is naturally observed. 
+        The scene should be immersive, with realistic lighting, textures, and depth of field. Avoid any artificial 
+        elements, text, labels, or diagrams—focus purely on an authentic, real-world depiction of {custom_prompt}.
+        The background must accurately depict the {custom_prompt}, and must not be influenced by any of the examples 
+        below in any way. The examples below are purely for reference and should not directly influence your output.
 
-            The scene should be immersive, with realistic lighting, textures, and depth of field. Avoid any artificial elements, text, labels, or diagrams—focus purely on an authentic, real-world depiction.
+        The image must be grounded in reality and must not be abstract, symbolic, or artistic interpretations—it 
+        should depict something a person could see in real life.
 
-            Strict Adherence to Context:
+        Important: Do not reference or take inspiration from any of the following examples—these are strictly to 
+        illustrate the level of detail and realism required:
 
-            If {custom_prompt} describes a specific time period, environment, or style (e.g., "a medieval blacksmith's workshop"), the image must reflect that and nothing else.
-            If {custom_prompt} specifies an artistic style (e.g., "a cartoon of Medusa for young children"), then the entire image must be a cohesive cartoon illustration with no photorealistic elements.
-            If {custom_prompt} describes a specific perspective, such as "a close-up of an insect pollinating a flower," then ensure the focus remains solely on that scene with no unrelated background elements.
-            Clarifications to Avoid Misinterpretations:
-            🚫 Do not use past examples as reference for content—use them only as a guide for quality, realism, and visual coherence.
-            🚫 Do not mix themes, time periods, or styles that are not explicitly stated in {custom_prompt}.
-            🚫 Do not include abstract, symbolic, or artistic elements unless explicitly requested.
+        🚗 For physics concepts, like Hooke's Law → A car suspension system absorbing impact.
+        🌱 For biology, like Photosynthesis → A microscopic view of chloroplasts inside a leaf.
+        🌍 For geography, like Tectonic Plate Movement → A cracked fault line after an earthquake.
+        🏭 For history, like The Industrial Revolution → Workers in a steam-powered factory.
 
-            Final Check: Before finalizing the image, ensure that every detail aligns perfectly with {custom_prompt} and no external context has influenced the output.
+        These examples should not influence your image—only ensure that the generated image follows the same level 
+        of photorealism, clarity, and realism.
         """
-
     elif topic and prompt_type == "topic":
         return f"""
-            Generate a highly detailed, photorealistic image of {topic}.
-            The image must accurately depict only what is described in {topic} and nothing else. Do not incorporate elements from unrelated concepts, contexts, or prior examples.
+        A highly detailed, photorealistic image of a real-world application of {topic}. 
+        The image should capture a practical, real-life scenario where this concept is naturally observed. 
+        The scene should be immersive, with realistic lighting, textures, and depth of field. Avoid any artificial 
+        elements, text, labels, or diagrams—focus purely on an authentic, real-world depiction of {topic} in action.
+        The background must accurately depict the {topic}, and must not be influenced by any of the examples 
+        below in any way. The examples below are purely for reference and should not directly influence your output.
 
-            The scene should be immersive, with realistic lighting, textures, and depth of field. Avoid any artificial elements, text, labels, or diagrams—focus purely on an authentic, real-world depiction.
+        The image must be grounded in reality and must not be abstract, symbolic, or artistic interpretations—it 
+        should depict something a person could see in real life.
 
-            Strict Adherence to Context:
+        Important: Do not reference or take inspiration from any of the following examples—these are strictly to 
+        illustrate the level of detail and realism required:
 
-            If {topic} describes a specific time period, environment, or style (e.g., "a medieval blacksmith's workshop"), the image must reflect that and nothing else.
-            If {topic} specifies an artistic style (e.g., "a cartoon of Medusa for young children"), then the entire image must be a cohesive cartoon illustration with no photorealistic elements.
-            If {topic} describes a specific perspective, such as "a close-up of an insect pollinating a flower," then ensure the focus remains solely on that scene with no unrelated background elements.
-            Clarifications to Avoid Misinterpretations:
-            🚫 Do not use past examples as reference for content—use them only as a guide for quality, realism, and visual coherence.
-            🚫 Do not mix themes, time periods, or styles that are not explicitly stated in {topic}.
-            🚫 Do not include abstract, symbolic, or artistic elements unless explicitly requested.
+        🚗 For physics concepts, like Hooke's Law → A car suspension system absorbing impact.
+        🌱 For biology, like Photosynthesis → A microscopic view of chloroplasts inside a leaf.
+        🌍 For geography, like Tectonic Plate Movement → A cracked fault line after an earthquake.
+        🏭 For history, like The Industrial Revolution → Workers in a steam-powered factory.
 
-            Final Check: Before finalizing the image, ensure that every detail aligns perfectly with {topic} and no external context has influenced the output.
+        These examples should not influence your image—only ensure that the generated image follows the same level 
+        of photorealism, clarity, and realism.
         """
     else:
         raise ValueError("Either a topic or custom prompt must be provided")
