@@ -163,6 +163,8 @@ class Context:
 
             - explanation: a comprehensive and valuable explanation of the answer. When appropriate, use simple examples to help explain the answer. Separate out the explanation into multiple paragraphs if necessary. There should only be 2-3 sentences in each paragraph, and 2-3 paragraphs in total.
             - practice_question: a multiple choice question that tests the user's understanding of the answer
+            - You must only answer questions directly related to what is given in the lesson context, and you will refuse to answer any unrelated questions. You will instead say 
+            something along the lines of 'sorry, I'm not able to answer that. Do you have a question specific to this lesson?'
             - follow_up_output: A string that specifically asks the user the following question:
             "Would you like me to create some flashcards on this for you?"
 
