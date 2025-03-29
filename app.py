@@ -7,23 +7,15 @@ from core.integrations import ai_images
 from config.const import PROXY
 from utils import logger
 from core.integrations import open_ai
+from core.data import Data
 
 from flask import Flask, request
 
 
 app = Flask(__name__)
 
-with open("data/modules.json", "r") as module_data:
-    modules = json.load(module_data)
-
-with open("data/lessons.json", "r") as lesson_data:
-    lessons = json.load(lesson_data)
-
-with open("data/quizzes.json", "r") as quiz_data:
-    quizzes = json.load(quiz_data)
-
-with open("data/decks.json", "r") as deck_data:
-    decks = json.load(deck_data)
+data = Data()
+data.sync()
 
 
 # ==================================
@@ -134,8 +126,12 @@ def get_search_results():
 # contents from bubble and write to json files
 @app.route("/force-sync/", methods=["POST"])
 def sync_json_files():
-    url = "https://studentvault.co.uk/version-test/api/1.1/obj/ai_quiz"
-    data = requests.get(url).json()
+    return data.sync()
+
+
+# ==================================
+#       Run server
+# ==================================
 
 
 def main():
