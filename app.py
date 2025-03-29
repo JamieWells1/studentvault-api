@@ -132,9 +132,10 @@ def get_search_results():
 
 # will manually get all the necassary database
 # contents from bubble and write to json files
-@app.route("force-sync")
-def sync():
-    pass
+@app.route("/force-sync/", methods=["POST"])
+def sync_json_files():
+    url = "https://studentvault.co.uk/version-test/api/1.1/obj/ai_quiz"
+    data = requests.get(url).json()
 
 
 def main():

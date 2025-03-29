@@ -36,9 +36,11 @@ PROD_EXTRACT_FLASHCARDS_URL = (
 )
 
 
-# Environment variables and models
+# API keys
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 REPLICATE_API_KEY = os.environ.get("REPLICATE_API_KEY")
+
+# Models
 OPENAI_MODEL = "gpt-4o-mini"
 REPLICATE_MODEL = "black-forest-labs/flux-schnell"
 
