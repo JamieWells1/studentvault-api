@@ -114,7 +114,17 @@ def answer_question():
 
 @app.route("/search/", methods=["POST"])
 def get_search_results():
-    pass
+    request_data = request.get_json()
+
+    """
+    example_request = {
+        "resource_type": "ai_quiz",
+        "query": "physics resistivity",
+    }
+    """
+
+    # returns unique ids of all matches found
+    return data.search(resource_type, query)
 
 
 @app.route("/update-cache/", methods=["POST"])
@@ -123,10 +133,10 @@ def update_cache():
 
     """
     example_request = {
-        "table": "lesson"
-        "unique_id": "1733086015938x643431375464275700"
-        "title": "My cool lesson"
-        "studentvault_api_key": "1FD3F3A74762DE8DC8272A127"
+        "table": "lesson",
+        "unique_id": "1733086015938x643431375464275700",
+        "title": "My cool lesson",
+        "studentvault_api_key": "1FD3F3A74762DE8DC8272A127",
         }
     """
 
@@ -147,10 +157,10 @@ def delete_item():
 
     """
     example_request = {
-        "table": "lesson"
-        "unique_id": "1733086015938x643431375464275700"
-        "title": "My cool lesson"
-        "studentvault_api_key": "1FD3F3A74762DE8DC8272A127"
+        "table": "lesson",
+        "unique_id": "1733086015938x643431375464275700",
+        "title": "My cool lesson",
+        "studentvault_api_key": "1FD3F3A74762DE8DC8272A127",
         }
     """
 

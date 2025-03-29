@@ -6,6 +6,8 @@ from typing import Dict, List, Any
 
 from utils import logger
 
+from rapidfuzz import process, fuzz
+
 
 class Data:
     def __init__(self):
@@ -39,11 +41,11 @@ class Data:
         self.decks = decks
 
     def sync(self) -> Dict[str, Any]:
-        tables = ["module", "lesson", "ai_quiz", "flashcard_deck"]
+        TABLES = ["module", "lesson", "ai_quiz", "flashcard_deck"]
 
         logger.output("Writing database content to JSON memory...")
 
-        for table in tables:
+        for table in TABLES:
             url = f"https://studentvault.co.uk/version-test/api/1.1/obj/{table}"
             try:
                 data = requests.get(url).json()
@@ -86,3 +88,20 @@ class Data:
             self.quizzes.pop(unique_id)
         elif table == "flashcard_deck":
             self.decks.pop(unique_id)
+
+        return {unique_id: title}
+
+    def search(self, resource_type, query):
+        if resource_type == "module":
+            titles_to_search = list(self.modules.values())
+        elif resource_type == "lesson":
+            titles_to_search = list(self.lessons.values())
+        elif resource_type == "ai_quiz":
+            titles_to_search = list(self.quizzes.values())
+        elif resource_type == "flashcard_deck":
+            titles_to_search = list(self.decks.values())
+
+        results = process.extract(query, titles_to_search, scorer=fuzz.ratio, limit=5)
+
+        for match, score, _ in results:
+            print(f"- {match} ({score})")
