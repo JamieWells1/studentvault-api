@@ -3,10 +3,10 @@ from typing import Dict, List
 
 from core import business_logic
 from core import flashcards
-from core import ai_images
+from core.integrations import ai_images
 from config.const import PROXY
 from utils import logger
-from core import open_ai
+from core.integrations import open_ai
 
 from flask import Flask, request
 

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from core.error_handler import ErrorHandler
-import core.open_ai as open_ai
+from core.integrations import open_ai
 from utils import logger
 
 
