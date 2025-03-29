@@ -65,7 +65,7 @@ class Data:
 
         return {"status": 200, "message": "Data synced to cache successfully"}
 
-    def add(table, unique_id, title):
+    def update(self, table, unique_id, title) -> Dict[str, str]:
         if table == "module":
             self.modules[unique_id] = title
         elif table == "lesson":
@@ -74,3 +74,15 @@ class Data:
             self.quizzes[unique_id] = title
         elif table == "flashcard_deck":
             self.decks[unique_id] = title
+
+        return {unique_id: title}
+
+    def delete(self, table, unique_id, title) -> Dict[str, str]:
+        if table == "module":
+            self.modules.pop(unique_id)
+        elif table == "lesson":
+            self.lessons.pop(unique_id)
+        elif table == "ai_quiz":
+            self.quizzes.pop(unique_id)
+        elif table == "flashcard_deck":
+            self.decks.pop(unique_id)
