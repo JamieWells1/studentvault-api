@@ -1,7 +1,7 @@
 import json
 from typing import Dict, List
 
-from core import business_logic
+from core import server
 from core import flashcards
 from core.integrations import ai_images
 from config.const import PROXY
@@ -12,6 +12,23 @@ from flask import Flask, request
 
 
 app = Flask(__name__)
+
+with open("data/modules.json", "r") as module_data:
+    modules = json.load(module_data)
+
+with open("data/lessons.json", "r") as lesson_data:
+    lessons = json.load(lesson_data)
+
+with open("data/quizzes.json", "r") as quiz_data:
+    quizzes = json.load(quiz_data)
+
+with open("data/decks.json", "r") as deck_data:
+    decks = json.load(deck_data)
+
+
+# ==================================
+#       Resource functionality
+# ==================================
 
 
 # Endpoint for creating AI resources
@@ -29,14 +46,14 @@ def create_resource():
 
     """
 
-    data = business_logic.BodyData(
+    data = server.BodyData(
         video_id=data.get("video_id"),
         generation_method=data.get("generation_method"),
         text_prompt=data.get("text_prompt"),
         resource_type=data.get("resource_type"),
     )
 
-    server = business_logic.Server(data)
+    server = server.Server(data)
     resource = server.generate()
 
     return json.dumps(resource)
@@ -47,11 +64,19 @@ def create_resource():
 def extract_flashcards():
     data = request.get_json()
 
+    """
+    example_request = {
+        "body": "What is another name for stocks/shares? - Equities;
+        What is another name for fixed-income? - Bonds;"
+        }
+    """
+
     extracted_flashcards: List[Dict] = flashcards.extract(data.get("body"))
 
     return json.dumps(extracted_flashcards)
 
 
+# Endpoint for generating an image with Replicate
 @app.route("/generate-image/", methods=["POST"])
 def generate_image():
     data = request.get_json()
@@ -73,6 +98,11 @@ def generate_image():
     return json.dumps(response)
 
 
+# ==================================
+#       Chat functionality
+# ==================================
+
+
 @app.route("/answer-question/", methods=["POST"])
 def answer_question():
     data = request.get_json()
@@ -83,6 +113,28 @@ def answer_question():
     )
 
     return json.dumps(response)
+
+
+# ==================================
+#       Search functionality
+# ==================================
+
+
+@app.route("/search/", methods=["POST"])
+def get_search_results():
+    pass
+
+
+# ==================================
+#       Update cache functionality
+# ==================================
+
+
+# will manually get all the necassary database
+# contents from bubble and write to json files
+@app.route("force-sync")
+def sync():
+    pass
 
 
 def main():

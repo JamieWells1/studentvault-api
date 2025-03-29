@@ -1,3 +1,5 @@
+from typing import List
+
 from algoliasearch.search.client import SearchClientSync
 
 app_id = "WCKUJMGIF6"
@@ -6,16 +8,18 @@ index_name = "quizzes_index"
 
 client = SearchClientSync(app_id, api_key)
 
-# Run multi-index search
-search_response = client.search(
-    {"requests": [{"indexName": index_name, "query": "civil"}]}
-)
 
-search_results = search_response.results
+def search() -> List[object]:
+    search_response = client.search(
+        {"requests": [{"indexName": index_name, "query": "civil"}]}
+    )
 
-search_response_obj = search_results[0].actual_instance
+    search_results = search_response.results
 
-hits = search_response_obj.hits
+    search_response_obj = search_results[0].actual_instance
 
-for hit in hits:
-    print(f"- {hit.title} [{hit.type}] (objectID: {hit.object_id})")
+    hits = search_response_obj.hits
+
+    print(type(hits[0]))
+
+    return hits
