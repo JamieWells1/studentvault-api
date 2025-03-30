@@ -69,7 +69,11 @@ class Data:
             json_objects = {}
 
             for result in results:
-                json_objects[result["_id"]] = result.get("title", "Untitled")
+                uid = result["_id"]
+                title = result.get("title", "Untitled")
+
+                self.tables[table][uid] = title
+                json_objects[uid] = title
 
             with open(f"db_cache/{table}.json", "w") as f:
                 json.dump(json_objects, f, indent=2)
