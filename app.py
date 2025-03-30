@@ -124,8 +124,7 @@ def get_search_results():
     """
 
     # returns unique ids of all matches found
-    matches, scores = data.search(request_data["table"], request_data["query"])
-    return json.dumps({"matches": matches, "scores": scores})
+    return json.dumps(data.search(request_data["table"], request_data["query"]))
 
 
 @app.route("/update-cache/", methods=["POST"])
@@ -141,7 +140,7 @@ def update_cache():
         }
     """
 
-    if request_data.headers.get("studentvault_api_key") != STUDENTVAULT_API_KEY:
+    if request.headers.get("studentvault_api_key") != STUDENTVAULT_API_KEY:
         return {"status": 400, "message": "Unauthenticated request"}
 
     entry = data.update(
@@ -167,7 +166,7 @@ def delete_item():
         }
     """
 
-    if request_data.headers.get("studentvault_api_key") != STUDENTVAULT_API_KEY:
+    if request.headers.get("studentvault_api_key") != STUDENTVAULT_API_KEY:
         return {"status": 400, "message": "Unauthenticated request"}
 
     entry = data.delete(
@@ -189,6 +188,9 @@ def delete_item():
 # contents from bubble and write to json files
 @app.route("/force-sync/", methods=["GET"])
 def sync_json_files():
+    if request.headers.get("studentvault_api_key") != STUDENTVAULT_API_KEY:
+        return {"status": 400, "message": "Unauthenticated request"}
+
     return data.sync()
 
 

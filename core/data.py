@@ -85,9 +85,16 @@ class Data:
 
         matches = []
         scores = []
+        ids = []
 
         for match, score, _ in results:
             matches.append(match)
             scores.append(score)
+            ids.append(title_to_id.get(match))
 
-        return matches, scores
+            # Need to return id too, not sure this will work
+
+            # Group entries with similar scores together and
+            # then add a wrapper filter of studies/user reviews??
+
+        return {"matches": matches, "scores": scores, "ids": ids}
