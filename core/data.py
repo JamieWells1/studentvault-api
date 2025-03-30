@@ -35,10 +35,12 @@ class Data:
             except (FileNotFoundError, JSONDecodeError):
                 decks = {}
 
-        self.modules = modules
-        self.lessons = lessons
-        self.quizzes = quizzes
-        self.decks = decks
+        self.tables = {
+            "module": modules,
+            "lesson": lessons,
+            "ai_quiz": quizzes,
+            "flashcard_deck": decks,
+        }
 
     def sync(self) -> Dict[str, Any]:
         TABLES = ["module", "lesson", "ai_quiz", "flashcard_deck"]
@@ -67,41 +69,25 @@ class Data:
 
         return {"status": 200, "message": "Data synced to cache successfully"}
 
-    def update(self, table, unique_id, title) -> Dict[str, str]:
-        if table == "module":
-            self.modules[unique_id] = title
-        elif table == "lesson":
-            self.lessons[unique_id] = title
-        elif table == "ai_quiz":
-            self.quizzes[unique_id] = title
-        elif table == "flashcard_deck":
-            self.decks[unique_id] = title
-
+    def update(self, table: str, unique_id: str, title: str) -> Dict[str, str]:
+        self.tables[table][unique_id] = title
         return {unique_id: title}
 
-    def delete(self, table, unique_id, title) -> Dict[str, str]:
-        if table == "module":
-            self.modules.pop(unique_id)
-        elif table == "lesson":
-            self.lessons.pop(unique_id)
-        elif table == "ai_quiz":
-            self.quizzes.pop(unique_id)
-        elif table == "flashcard_deck":
-            self.decks.pop(unique_id)
-
+    def delete(self, table: str, unique_id: str, title: str) -> Dict[str, str]:
+        self.tables[table].pop(unique_id, None)
         return {unique_id: title}
 
-    def search(self, resource_type, query):
-        if resource_type == "module":
-            titles_to_search = list(self.modules.values())
-        elif resource_type == "lesson":
-            titles_to_search = list(self.lessons.values())
-        elif resource_type == "ai_quiz":
-            titles_to_search = list(self.quizzes.values())
-        elif resource_type == "flashcard_deck":
-            titles_to_search = list(self.decks.values())
+    def search(self, table: str, query: str):
+        query = query.lower()
+        titles = [title.lower() for title in self.tables[table].values()]
 
-        results = process.extract(query, titles_to_search, scorer=fuzz.ratio, limit=5)
+        results = process.extract(query, titles, scorer=fuzz.ratio, limit=24)
+
+        matches = []
+        scores = []
 
         for match, score, _ in results:
-            print(f"- {match} ({score})")
+            matches.append(match)
+            scores.append(score)
+
+        return matches, scores

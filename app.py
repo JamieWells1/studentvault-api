@@ -118,13 +118,14 @@ def get_search_results():
 
     """
     example_request = {
-        "resource_type": "ai_quiz",
+        "table": "ai_quiz",
         "query": "physics resistivity",
     }
     """
 
     # returns unique ids of all matches found
-    return data.search(resource_type, query)
+    matches, scores = data.search(request_data["table"], request_data["query"])
+    return json.dumps({"matches": matches, "scores": scores})
 
 
 @app.route("/update-cache/", methods=["POST"])
@@ -143,7 +144,9 @@ def update_cache():
     if request_data.headers.get("studentvault_api_key") != STUDENTVAULT_API_KEY:
         return {"status": 400, "message": "Unauthenticated request"}
 
-    entry = data.update(table, unique_id, title)
+    entry = data.update(
+        request_data["table"], request_data["unique_id"], request_data["title"]
+    )
     if entry:
         return {"status": 200, "message": "Entry updated successfully"}
     else:
@@ -167,7 +170,9 @@ def delete_item():
     if request_data.headers.get("studentvault_api_key") != STUDENTVAULT_API_KEY:
         return {"status": 400, "message": "Unauthenticated request"}
 
-    entry = data.delete(table, unique_id, title)
+    entry = data.delete(
+        request_data["table"], request_data["unique_id"], request_data["title"]
+    )
     if entry:
         return {"status": 200, "message": "Entry deleted successfully"}
     else:
