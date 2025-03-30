@@ -4,7 +4,7 @@ from typing import Dict, List
 from core import server
 from core import flashcards
 from core.integrations import ai_images
-from config.const import PROXY, STUDENTVAULT_API_KEY
+from config.const import STUDENTVAULT_API_KEY
 from utils import logger
 from core.integrations import open_ai
 from core.data import Data
@@ -120,11 +120,14 @@ def get_search_results():
     example_request = {
         "table": "ai_quiz",
         "query": "physics resistivity",
+        "bucket_size": 5,
     }
     """
 
     # returns unique ids of all matches found
-    return json.dumps(data.search(request_data["table"], request_data["query"]))
+    return json.dumps(
+        data.search(request_data["table"], request_data["query"], bucket_size=5)
+    )
 
 
 @app.route("/update-cache/", methods=["POST"])
@@ -136,11 +139,10 @@ def update_cache():
         "table": "lesson",
         "unique_id": "1733086015938x643431375464275700",
         "title": "My cool lesson",
-        "studentvault_api_key": "1FD3F3A74762DE8DC8272A127",
         }
     """
 
-    if request.headers.get("studentvault_api_key") != STUDENTVAULT_API_KEY:
+    if request.headers.get("X-StudentVault-Key") != STUDENTVAULT_API_KEY:
         return {"status": 400, "message": "Unauthenticated request"}
 
     entry = data.update(
@@ -162,12 +164,14 @@ def delete_item():
         "table": "lesson",
         "unique_id": "1733086015938x643431375464275700",
         "title": "My cool lesson",
-        "studentvault_api_key": "1FD3F3A74762DE8DC8272A127",
         }
     """
 
-    if request.headers.get("studentvault_api_key") != STUDENTVAULT_API_KEY:
-        return {"status": 400, "message": "Unauthenticated request"}
+    if request.headers.get("X-StudentVault-Key") != STUDENTVAULT_API_KEY:
+        return {
+            "status": 400,
+            "message": f"Unauthenticated request.",
+        }
 
     entry = data.delete(
         request_data["table"], request_data["unique_id"], request_data["title"]
@@ -180,7 +184,7 @@ def delete_item():
 
 
 # ==================================
-#       Update cache functionality
+#       Force cache sync
 # ==================================
 
 
@@ -188,8 +192,11 @@ def delete_item():
 # contents from bubble and write to json files
 @app.route("/force-sync/", methods=["GET"])
 def sync_json_files():
-    if request.headers.get("studentvault_api_key") != STUDENTVAULT_API_KEY:
-        return {"status": 400, "message": "Unauthenticated request"}
+    if request.headers.get("X-StudentVault-Key") != STUDENTVAULT_API_KEY:
+        return {
+            "status": 400,
+            "message": "Unauthenticated request.",
+        }
 
     return data.sync()
 
@@ -200,5 +207,5 @@ def sync_json_files():
 
 
 def main():
-    logger.output(f"Startup complete. Proxy running on port {PROXY.get("port")}")
+    logger.output("✅ Startup complete.")
     app.run(host="0.0.0.0", port=8080)

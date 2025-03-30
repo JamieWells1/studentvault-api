@@ -3,6 +3,9 @@ import json
 import requests
 from json.decoder import JSONDecodeError
 from typing import Dict, List, Any
+import asyncio
+import threading
+import time
 
 from utils import logger
 
@@ -41,6 +44,12 @@ class Data:
             "ai_quiz": quizzes,
             "flashcard_deck": decks,
         }
+        self._dirty_tables = set()
+        self._last_write = {}
+        self._write_threads = {}
+        self._write_interval = 2
+
+    # =========== File interaction ===========
 
     def sync(self) -> Dict[str, Any]:
         TABLES = ["module", "lesson", "ai_quiz", "flashcard_deck"]
@@ -64,39 +73,65 @@ class Data:
                 json.dump(json_objects, f, indent=2)
 
             logger.output(
-                f"Successfully written contents from table '{table}' to cache."
+                f"✅ Successfully written contents from table '{table}' to cache."
             )
 
         return {"status": 200, "message": "Data synced to cache successfully"}
 
+    def _schedule_write(self, table: str):
+        def write_later():
+            while True:
+                time.sleep(self._write_interval)
+
+                if time.time() - self._last_write[table] >= self._write_interval:
+                    with open(f"db_cache/{table}.json", "w") as f:
+                        json.dump(self.tables[table], f, indent=2)
+                    logger.output(f"✅ Wrote updated JSON for table '{table}'")
+
+                    self._dirty_tables.discard(table)
+                    self._write_threads.pop(table, None)
+                    break
+
+        self._last_write[table] = time.time()
+
+        if table not in self._dirty_tables:
+            self._dirty_tables.add(table)
+
+            if table not in self._write_threads:
+                self._write_threads[table] = threading.Thread(target=write_later)
+                self._write_threads[table].start()
+
+    # =========== Local instance updates ===========
+
     def update(self, table: str, unique_id: str, title: str) -> Dict[str, str]:
         self.tables[table][unique_id] = title
+        self._schedule_write(table)
         return {unique_id: title}
 
     def delete(self, table: str, unique_id: str, title: str) -> Dict[str, str]:
         self.tables[table].pop(unique_id, None)
+        self._schedule_write(table)
         return {unique_id: title}
 
-    def search(self, table: str, query: str):
+    # =========== Searching ===========
+
+    def search(self, table: str, query: str, bucket_size: int):
         query = query.lower()
-        titles = [title.lower() for title in self.tables[table].values()]
+        id_to_title = self.tables[table]
+        title_to_id = {title.lower(): uid for uid, title in id_to_title.items()}
+
+        titles = list(title_to_id.keys())
 
         results = process.extract(query, titles, scorer=fuzz.ratio, limit=24)
 
         matches = []
-        scores = []
-        ids = []
 
-        for match, score, _ in results:
-            matches.append(match)
-            scores.append(score)
-            # ids.append(title_to_id.get(match))
+        for title, score, _ in results:
+            # round to nearest 5
+            # a larger bucket size will prioritise relevance less
+            # a smaller bucket size will prioritise relevance more
+            rounded_score = round(score / bucket_size) * bucket_size
+            uid = title_to_id[title]
 
-            # Need to return id too, not sure this will work
-
-            # Group entries with similar scores together and
-            # then add a wrapper filter of studies/user reviews??
-
-            # also add async disk-writing
-
-        return {"matches": matches, "scores": scores, "ids": ids}
+            matches.append({"unique_id": uid, "title": title, "score": rounded_score})
+        return matches
