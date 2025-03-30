@@ -1,4 +1,5 @@
 __pycache__
 .venv
-__init__.py
 .DS_Store
+.idea
+.pytest_cache

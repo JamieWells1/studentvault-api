@@ -1,23 +1,32 @@
 import json
 from typing import Dict, List
 
-from core import business_logic
+from core import server
 from core import flashcards
-from core import ai_images
-from config.const import PROXY
+from core.integrations import ai_images
+from config.const import STUDENTVAULT_API_KEY
 from utils import logger
-from core import open_ai
+from core.integrations import open_ai
+from core.data import Data
 
 from flask import Flask, request
 
 
 app = Flask(__name__)
 
+data = Data()
+data.sync()
+
+
+# ==================================
+#       Resource functionality
+# ==================================
+
 
 # Endpoint for creating AI resources
 @app.route("/create-with-ai/", methods=["POST"])
 def create_resource():
-    data = request.get_json()
+    request_data = request.get_json()
 
     """
     example_request = {
@@ -29,15 +38,15 @@ def create_resource():
 
     """
 
-    data = business_logic.BodyData(
-        video_id=data.get("video_id"),
-        generation_method=data.get("generation_method"),
-        text_prompt=data.get("text_prompt"),
-        resource_type=data.get("resource_type"),
+    request_data = server.BodyData(
+        video_id=request_data.get("video_id"),
+        generation_method=request_data.get("generation_method"),
+        text_prompt=request_data.get("text_prompt"),
+        resource_type=request_data.get("resource_type"),
     )
 
-    server = business_logic.Server(data)
-    resource = server.generate()
+    service = server.Server(request_data)
+    resource = service.generate()
 
     return json.dumps(resource)
 
@@ -45,16 +54,24 @@ def create_resource():
 # Endpoint for extracting Quizlet flashcards
 @app.route("/extract-flashcards/", methods=["POST"])
 def extract_flashcards():
-    data = request.get_json()
+    request_data = request.get_json()
 
-    extracted_flashcards: List[Dict] = flashcards.extract(data.get("body"))
+    """
+    example_request = {
+        "body": "What is another name for stocks/shares? - Equities;
+        What is another name for fixed-income? - Bonds;"
+        }
+    """
+
+    extracted_flashcards: List[Dict] = flashcards.extract(request_data.get("body"))
 
     return json.dumps(extracted_flashcards)
 
 
+# Endpoint for generating an image with Replicate
 @app.route("/generate-image/", methods=["POST"])
 def generate_image():
-    data = request.get_json()
+    request_data = request.get_json()
 
     """
     example_request = {
@@ -65,26 +82,130 @@ def generate_image():
     """
 
     response = ai_images.generate_image(
-        topic=data.get("topic"),
-        custom_prompt=data.get("custom_prompt"),
-        prompt_type=data.get("prompt_type"),
+        topic=request_data.get("topic"),
+        custom_prompt=request_data.get("custom_prompt"),
+        prompt_type=request_data.get("prompt_type"),
     )
 
     return json.dumps(response)
+
+
+# ==================================
+#       Chat functionality
+# ==================================
 
 
 @app.route("/answer-question/", methods=["POST"])
 def answer_question():
-    data = request.get_json()
+    request_data = request.get_json()
 
     response = open_ai.answer_question(
-        question=data.get("question"),
-        lesson_context=data.get("lesson_context"),
+        question=request_data.get("question"),
+        lesson_context=request_data.get("lesson_context"),
     )
 
     return json.dumps(response)
 
 
+# ==================================
+#       Search/memory functionality
+# ==================================
+
+
+@app.route("/search/", methods=["POST"])
+def get_search_results():
+    request_data = request.get_json()
+
+    """
+    example_request = {
+        "table": "ai_quiz",
+        "query": "physics resistivity",
+        "bucket_size": 5,
+    }
+    """
+
+    # returns unique ids of all matches found
+    return json.dumps(
+        data.search(request_data["table"], request_data["query"], bucket_size=5)
+    )
+
+
+@app.route("/update-cache/", methods=["POST"])
+def update_cache():
+    request_data = request.get_json()
+
+    """
+    example_request = {
+        "table": "lesson",
+        "unique_id": "1733086015938x643431375464275700",
+        "title": "My cool lesson",
+        }
+    """
+
+    if request.headers.get("X-StudentVault-Key") != STUDENTVAULT_API_KEY:
+        return {"status": 400, "message": "Unauthenticated request"}
+
+    entry = data.update(
+        request_data["table"], request_data["unique_id"], request_data["title"]
+    )
+    if entry:
+        return {"status": 200, "message": "Entry updated successfully"}
+    else:
+        # force a resync
+        return data.sync()
+
+
+@app.route("/delete-item/", methods=["POST"])
+def delete_item():
+    request_data = request.get_json()
+
+    """
+    example_request = {
+        "table": "lesson",
+        "unique_id": "1733086015938x643431375464275700",
+        "title": "My cool lesson",
+        }
+    """
+
+    if request.headers.get("X-StudentVault-Key") != STUDENTVAULT_API_KEY:
+        return {
+            "status": 400,
+            "message": f"Unauthenticated request.",
+        }
+
+    entry = data.delete(
+        request_data["table"], request_data["unique_id"], request_data["title"]
+    )
+    if entry:
+        return {"status": 200, "message": "Entry deleted successfully"}
+    else:
+        # force a resync
+        return data.sync()
+
+
+# ==================================
+#       Force cache sync
+# ==================================
+
+
+# will manually get all the necassary database
+# contents from bubble and write to json files
+@app.route("/force-sync/", methods=["GET"])
+def sync_json_files():
+    if request.headers.get("X-StudentVault-Key") != STUDENTVAULT_API_KEY:
+        return {
+            "status": 400,
+            "message": "Unauthenticated request.",
+        }
+
+    return data.sync()
+
+
+# ==================================
+#       Run server
+# ==================================
+
+
 def main():
-    logger.output(f"Running on proxy port {PROXY.get("port")}")
+    logger.output("✅ Startup complete.")
     app.run(host="0.0.0.0", port=8080)

@@ -1,6 +1,6 @@
 def output(text):
-    print(f"\n=> {text} ")
+    print(f"=> {text} ")
 
 
 def error(text):
-    print(f"\n=> Error: {text} ")
+    print(f"=> Error: {text} ")

@@ -1,4 +1,4 @@
-from core.youtube import Youtube
+from core.integrations.youtube import Youtube
 
 from typing import List
 
