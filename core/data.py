@@ -48,6 +48,7 @@ class Data:
         self._last_write = {}
         self._write_threads = {}
         self._write_interval = 2
+        self.file_writing_allowed = True
 
     # =========== File interaction ===========
 
@@ -56,6 +57,7 @@ class Data:
 
         logger.output("Writing database content to JSON memory...")
 
+        self.file_writing_allowed = False
         for table in TABLES:
             url = f"https://studentvault.co.uk/version-test/api/1.1/obj/{table}"
             try:
@@ -76,30 +78,33 @@ class Data:
                 f"✅ Successfully written contents from table '{table}' to cache."
             )
 
+        self.file_writing_allowed = True
         return {"status": 200, "message": "Data synced to cache successfully"}
 
     def _schedule_write(self, table: str):
-        def write_later():
-            while True:
-                time.sleep(self._write_interval)
+        if self.file_writing_allowed:
 
-                if time.time() - self._last_write[table] >= self._write_interval:
-                    with open(f"db_cache/{table}.json", "w") as f:
-                        json.dump(self.tables[table], f, indent=2)
-                    logger.output(f"✅ Wrote updated JSON for table '{table}'")
+            def write_later():
+                while True:
+                    time.sleep(self._write_interval)
 
-                    self._dirty_tables.discard(table)
-                    self._write_threads.pop(table, None)
-                    break
+                    if time.time() - self._last_write[table] >= self._write_interval:
+                        with open(f"db_cache/{table}.json", "w") as f:
+                            json.dump(self.tables[table], f, indent=2)
+                        logger.output(f"✅ Wrote updated JSON for table '{table}'")
 
-        self._last_write[table] = time.time()
+                        self._dirty_tables.discard(table)
+                        self._write_threads.pop(table, None)
+                        break
 
-        if table not in self._dirty_tables:
-            self._dirty_tables.add(table)
+            self._last_write[table] = time.time()
 
-            if table not in self._write_threads:
-                self._write_threads[table] = threading.Thread(target=write_later)
-                self._write_threads[table].start()
+            if table not in self._dirty_tables:
+                self._dirty_tables.add(table)
+
+                if table not in self._write_threads:
+                    self._write_threads[table] = threading.Thread(target=write_later)
+                    self._write_threads[table].start()
 
     # =========== Local instance updates ===========
 
