@@ -90,11 +90,13 @@ class Data:
         for match, score, _ in results:
             matches.append(match)
             scores.append(score)
-            ids.append(title_to_id.get(match))
+            # ids.append(title_to_id.get(match))
 
             # Need to return id too, not sure this will work
 
             # Group entries with similar scores together and
             # then add a wrapper filter of studies/user reviews??
+
+            # also add async disk-writing
 
         return {"matches": matches, "scores": scores, "ids": ids}

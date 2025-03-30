@@ -200,5 +200,5 @@ def sync_json_files():
 
 
 def main():
-    logger.output(f"Running on proxy port {PROXY.get("port")}")
+    logger.output(f"Startup complete. Proxy running on port {PROXY.get("port")}")
     app.run(host="0.0.0.0", port=8080)
