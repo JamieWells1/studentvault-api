@@ -37,11 +37,11 @@ def generate_image(
             image_url = output[0]
         else:
             image_url = output[0].url
-        logger.output(f"Image URL: {image_url}")
 
     except Exception as e:
         logger.error(f"{e}")
     else:
+        logger.output(f"Generated image with URL '{image_url}'")
         return {"status": 200, "image_url": image_url}
 
     return {"status": 400, "error": f"Failed to generate image: {e}"}
