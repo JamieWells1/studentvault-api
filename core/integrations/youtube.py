@@ -39,6 +39,7 @@ class Youtube:
             logger.error(str(e))
 
         else:
+            logger.output(f"Captions retrieved from video with ID '{self.video_id}'")
             return {"status": 200, "captions": captions, "errors": []}
 
         return {"status": 400, "errors": errors}
