@@ -1,4 +1,3 @@
-import logging
 import random
 
 from youtube_transcript_api import YouTubeTranscriptApi
