@@ -43,6 +43,7 @@ def create_resource():
         generation_method=request_data.get("generation_method"),
         text_prompt=request_data.get("text_prompt"),
         resource_type=request_data.get("resource_type"),
+        lesson_type=request_data.get("lesson_type"),
     )
 
     service = server.Server(request_data)

@@ -22,6 +22,7 @@ def test_create_resource():
         "generation_method": "video",
         "text_prompt": "",
         "resource_type": "lesson",
+        "lesson_type": "twelve_blocks",
     }
 
     response = requests.post(url, json=payload)

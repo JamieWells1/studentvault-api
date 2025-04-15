@@ -50,6 +50,8 @@ class Data:
         self._write_interval = 2
         self.file_writing_allowed = True
 
+        self._start_sync_scheduler()
+
     # =========== File interaction ===========
 
     def sync(self) -> Dict[str, Any]:
@@ -109,6 +111,17 @@ class Data:
                 if table not in self._write_threads:
                     self._write_threads[table] = threading.Thread(target=write_later)
                     self._write_threads[table].start()
+
+    def _start_sync_scheduler(self):
+        def periodic_sync():
+            while True:
+                try:
+                    self.sync()
+                except Exception as e:
+                    logger.output(f"Periodic sync failed: {e}")
+                time.sleep(60)
+
+        threading.Thread(target=periodic_sync, daemon=True).start()
 
     # =========== Local instance updates ===========
 
