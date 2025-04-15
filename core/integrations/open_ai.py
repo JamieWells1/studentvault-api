@@ -52,21 +52,21 @@ def remove_extra_answers(questions):
     return questions
 
 
-def create_lesson(text_prompt, generation_method):
+def create_lesson(text_prompt, generation_method, lesson_type):
 
-    shared_instructions = Context.Lesson.SHARED
+    instructions = Context.Lesson.LESSON_TYPES[lesson_type]
 
     if generation_method == "video":
-        instructions = Context.Lesson.VIDEO
+        instructions += Context.Lesson.VIDEO
     elif generation_method == "text":
-        instructions = Context.Lesson.TEXT
+        instructions += Context.Lesson.TEXT
 
     try:
         response = client.beta.chat.completions.parse(
             messages=[
                 {
                     "role": "system",
-                    "content": instructions + shared_instructions,
+                    "content": instructions,
                 },
                 {
                     "role": "user",

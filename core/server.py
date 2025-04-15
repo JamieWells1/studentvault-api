@@ -11,6 +11,7 @@ class BodyData:
     generation_method: str
     text_prompt: str
     resource_type: str
+    lesson_type: str
 
 
 class Server:
@@ -23,7 +24,9 @@ class Server:
         # Invoke the right method to create our AI resource
         if self.data.resource_type == "lesson":
             response = open_ai.create_lesson(
-                text_prompt=text_prompt, generation_method=self.data.generation_method
+                text_prompt=text_prompt,
+                generation_method=self.data.generation_method,
+                lesson_type=self.data.lesson_type,
             )
             logger.output("OpenAI response received")
             return {
