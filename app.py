@@ -8,6 +8,7 @@ from config.const import STUDENTVAULT_API_KEY
 from utils import logger
 from core.integrations import open_ai
 from core.data import Data
+from core.integrations.youtube import Youtube
 
 from flask import Flask, request
 
@@ -200,6 +201,25 @@ def sync_json_files():
         }
 
     return data.sync()
+
+
+# ==================================
+#       Isolated utilities
+# ==================================
+
+
+@app.route("/get-captions/", methods=["POST"])
+def get_captions():
+    """
+    example_request = {
+        "video_id": "MmgxJZeMCSc"
+        }
+    """
+
+    request_data = request.get_json()
+    video = Youtube(request_data["video_id"])
+
+    return video.get_captions()
 
 
 # ==================================
