@@ -125,6 +125,9 @@ def get_search_results():
         "bucket_size": 5,
     }
     """
+    # bucket size is the grouping size of search strength, e.g. 60, 55, 50
+    # smaller bucket size -> results focused on showing strongest for search query
+    # larger -> results focused on external sorting (e.g. sort my number of studies)
 
     # returns unique ids of all matches found
     return json.dumps(
