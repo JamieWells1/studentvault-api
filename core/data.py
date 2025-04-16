@@ -119,7 +119,7 @@ class Data:
                     self.sync()
                 except Exception as e:
                     logger.output(f"Periodic sync failed: {e}")
-                time.sleep(60)
+                time.sleep(3600)
 
         threading.Thread(target=periodic_sync, daemon=True).start()
 
