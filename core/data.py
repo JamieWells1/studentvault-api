@@ -3,7 +3,6 @@ import json
 import requests
 from json.decoder import JSONDecodeError
 from typing import Dict, List, Any
-import asyncio
 import threading
 import time
 
