@@ -223,6 +223,27 @@ def get_captions():
     return video.get_captions()
 
 
+@app.route("/show-cache/", methods=["POST"])
+def show_cache():
+    table = request.args.get("table")
+    files = ["ai_quiz.json", "flashcard_deck.json", "lesson.json", "module.json"]
+
+    if table:
+        try:
+            with open(f"db_cache/{table}.json", "r+") as f:
+                return json.load(f)
+        except Exception as e:
+            return {"error": str(e)}
+    else:
+        contents = []
+        for file_cache in files:
+            try:
+                with open(file_cache, "r+") as f:
+                    contents.append(json.load(f))
+            except Exception as e:
+                return {"error": str(e)}
+        return contents
+
 # ==================================
 #       Run server
 # ==================================
