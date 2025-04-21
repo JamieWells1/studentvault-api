@@ -43,13 +43,14 @@ class Data:
             "ai_quiz": quizzes,
             "flashcard_deck": decks,
         }
-        self._dirty_tables = set()
-        self._last_write = {}
-        self._write_threads = {}
-        self._write_interval = 2
-        self.file_writing_allowed = True
+        self.sync_frequency = 3600
+        self.sync_scheduled = False
 
-        self._start_sync_scheduler()
+        self.sync()
+        logger.output(
+                f"✅ All table contents written to cache"
+            )
+
 
     # =========== File interaction ===========
 
@@ -79,59 +80,54 @@ class Data:
             with open(f"db_cache/{table}.json", "w") as f:
                 json.dump(json_objects, f, indent=2)
 
-            logger.output(
-                f"✅ Successfully written contents from table '{table}' to cache."
-            )
-
         self.file_writing_allowed = True
         return {"status": 200, "message": "Data synced to cache successfully"}
 
-    def _schedule_write(self, table: str):
-        if self.file_writing_allowed:
+    def schedule_sync(self):
+        def background_sync():
+            logger.output(f"⏳ Sync thread sleeping for {self.sync_frequency} seconds...")
+            time.sleep(self.sync_frequency)
+            self.sync()
+            self.sync_scheduled = False
+            logger.output(f"✅ Sync completed after delay of {self.sync_frequency} seconds.")
 
-            def write_later():
-                while True:
-                    time.sleep(self._write_interval)
+        if not self.sync_scheduled:
+            self.sync_scheduled = True
+            threading.Thread(target=background_sync, daemon=True).start()
+        else:
+            logger.output(f"🔄 Sync already scheduled to run (runs every {self.sync_frequency} seconds)")
 
-                    if time.time() - self._last_write[table] >= self._write_interval:
-                        with open(f"db_cache/{table}.json", "w") as f:
-                            json.dump(self.tables[table], f, indent=2)
-                        logger.output(f"✅ Wrote updated JSON for table '{table}'")
+    def append_json(self, table: str, unique_id: str, title: str) -> None:
+        with open(f"db_cache/{table}.json", "r+") as f:
+            entries = json.load(f)
+            entries[unique_id] = title
+            f.seek(0)
+            json.dump(entries, f, indent=4)
+            logger.output(f"Updated item '{title}' in shared JSON storage")
 
-                        self._dirty_tables.discard(table)
-                        self._write_threads.pop(table, None)
-                        break
-
-            self._last_write[table] = time.time()
-
-            if table not in self._dirty_tables:
-                self._dirty_tables.add(table)
-
-                if table not in self._write_threads:
-                    self._write_threads[table] = threading.Thread(target=write_later)
-                    self._write_threads[table].start()
-
-    def _start_sync_scheduler(self):
-        def periodic_sync():
-            while True:
-                try:
-                    self.sync()
-                except Exception as e:
-                    logger.output(f"Periodic sync failed: {e}")
-                time.sleep(3600)
-
-        threading.Thread(target=periodic_sync, daemon=True).start()
+    def delete_json(self, table: str, unique_id: str, title: str) -> None:
+        with open(f"db_cache/{table}.json", "r+") as f:
+            entries = json.load(f)
+            entries.pop(unique_id, entries)
+            f.seek(0)
+            f.truncate()
+            json.dump(entries, f, indent=4)
+            logger.output(f"Deleted item '{title}' from shared JSON storage")
 
     # =========== Local instance updates ===========
 
     def update(self, table: str, unique_id: str, title: str) -> Dict[str, str]:
         self.tables[table][unique_id] = title
-        self._schedule_write(table)
+        logger.output(f"Entry updated: {unique_id}: {title}")
+        self.append_json(table, unique_id, title)
+        self.schedule_sync()
         return {unique_id: title}
 
     def delete(self, table: str, unique_id: str, title: str) -> Dict[str, str]:
         self.tables[table].pop(unique_id, None)
-        self._schedule_write(table)
+        logger.output(f"Entry deleted: {unique_id}: {title}")
+        self.delete_json(table, unique_id, title)
+        self.schedule_sync()
         return {unique_id: title}
 
     # =========== Searching ===========
