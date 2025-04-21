@@ -10,8 +10,8 @@ class Context:
             Requirements:
             - Text Blocks: Contain 2-3 concise, academic sentences.
             - Multiple Choice Questions: Include one correct answer and exactly 3 distinct, plausible wrong answers that reflect common misconceptions. Ensure distractors are similar in nature to challenge students without causing confusion.
-            - Fill-in-the-Blank Blocks: Follow the same sequential logic and clear explanation as other blocks.
-            - Flow: Each block should logically follow from the previous one to maintain clarity. Here is an exemplar question based on the previously mentioned 
+            - Fill-in-the-Blank Blocks: Follow the same sequential logic and clear explanation as other blocks. Each blank must always be unique to all the other blanks in the lesson.
+            - Flow: Each block should logically follow from the previous one to maintain clarity. Here is an exemplar question based on the previously mentioned
             criteria:
             
             {"question": "Which of the following explains why plants appear green under normal light conditions?", "wrong_answers": ["Green is absorbed by chlorophyll", "Chlorophyll absorbs red and blue light but emits green", "All light except green is absorbed and stored"], "correct_answer": "Chlorophyll reflects green light", "explanation": "Chlorophyll absorbs red and blue light for photosynthesis but reflects green, making plants appear green."}
@@ -48,7 +48,7 @@ class Context:
             Requirements:
             - Text Blocks: Contain 2-3 concise, academic sentences.
             - Multiple Choice Questions: Include one correct answer and exactly 3 distinct, plausible wrong answers that reflect common misconceptions. Ensure distractors are similar in nature to challenge students without causing confusion.
-            - Fill-in-the-Blank Blocks: Follow the same sequential logic and clear explanation as other blocks.
+            - Fill-in-the-Blank Blocks: Follow the same sequential logic and clear explanation as other blocks. Each blank must always be unique to all the other blanks in the lesson.
             - Flow: Each block should logically follow from the previous one to maintain clarity. Here is an exemplar question based on the previously mentioned 
             criteria:
             
