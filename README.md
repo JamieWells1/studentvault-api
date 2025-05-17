@@ -1,119 +1,314 @@
-# StudentVault Resource API
+# StudentVault API Endpoints
 
-This is a proprietary API designed to retrieve captions from YouTube videos using the YouTube Transcript API. This API allows you to send a request with a YouTube video ID, and it will return the captions for that video.
+This repository contains the API endpoints for the StudentVault platform, designed to handle resource generation, flashcard extraction, image generation, search functionality, and more. Below is a comprehensive guide to all the available endpoints, their functionality, and usage.
+
+---
+
+## Table of Contents
+
+1. [Setup Instructions](#setup-instructions)
+2. [Endpoints Overview](#endpoints-overview)
+   - [Resource Functionality](#resource-functionality)
+   - [Chat Functionality](#chat-functionality)
+   - [Search/Memory Functionality](#searchmemory-functionality)
+   - [Cache Management](#cache-management)
+   - [Utility Endpoints](#utility-endpoints)
+3. [Error Handling](#error-handling)
+4. [License](#license)
+
+---
 
 ## Setup Instructions
 
 ### Prerequisites
 
 - Python 3.13
-- Required Python packages (listed below)
-- A working YouTube video ID with captions enabled
+- Install dependencies using:
 
-Install the required dependencies using pip:
-
-```shell
+```bash
 pip install -r requirements.txt
 ```
 
 ### Environment Variables
 
-This API requires specific environment variables to run. Ensure you have the following set up:
+Ensure the following environment variables are set:
 
-- `PROXY`: The proxy URL for accessing external resources.
-- `OPENAI_API_KEY`: The API key for OpenAI access (if needed for future enhancements).
+- `OPENAI_API_KEY`: API key for OpenAI.
+- `REPLICATE_API_KEY`: API key for Replicate.
+- `STUDENTVAULT_API_KEY`: Authentication key for cache management.
 
-These variables can be set in your environment or stored in a `.env` file (using the `python-dotenv` package to load them).
+---
 
-## Running the Server
+## Endpoints Overview
 
-### Gunicorn Server (Recommended for Production)
+### Resource Functionality
 
-To start the production server, use the following command:
+#### 1. **Create AI Resource**
 
-```shell
-gunicorn --config config/gunicorn_config.py app:app
-```
-
-This will launch the server using Gunicorn, which is optimized for handling production traffic.
-
-### Flask Development Server
-
-For development purposes, you can run the server with Flask:
-
-```shell
-python3 main.py
-```
-
-This starts the development server, which is useful for testing and debugging.
-
-## Sending a Request
-
-### Using Curl
-
-You can send a POST request to the API to retrieve captions for a YouTube video. Use the following command:
-
-```shell
-python3 request.py
-```
-
-Make sure that `request.py` is set up with the correct data, including the `video_id` of the YouTube video for which you want to retrieve captions.
-
-### API Request Structure
-
-The API expects a POST request at the endpoint `/create-with-ai/` with the following JSON payload:
+- **Endpoint**: `/create-with-ai/`
+- **Method**: `POST`
+- **Description**: Generates AI-based resources such as lessons, quizzes, or flashcard decks.
+- **Request Body**:
 
 ```json
 {
   "video_id": "uNeyu46JtIk",
   "generation_method": "video",
   "text_prompt": "",
-  "resource_type": "lesson"
+  "resource_type": "lesson",
+  "lesson_type": "twelve_blocks"
 }
 ```
 
-- `video_id`: The YouTube video ID (required).
-- `generation_method`: Defines the type of resource to generate (e.g., "video").
-- `text_prompt`: Optional text prompt for AI generation (can be left empty).
-- `resource_type`: The type of resource to generate (e.g., "lesson").
-
-### Response
-
-The API will return a JSON response with the following structure:
+- **Response**:
 
 ```json
 {
   "status": 200,
-  "captions": "The full transcript of the video...",
+  "resource_type": "lesson",
+  "payload": { ... }
+}
+```
+
+#### 2. **Extract Flashcards**
+
+- **Endpoint**: `/extract-flashcards/`
+- **Method**: `POST`
+- **Description**: Extracts flashcards from a provided text body.
+- **Request Body**:
+
+```json
+{
+  "body": "What is another name for stocks/shares? - Equities; ..."
+}
+```
+
+- **Response**:
+
+```json
+[
+  {"front": "What is another name for stocks/shares?", "back": "Equities"},
+  ...
+]
+```
+
+#### 3. **Generate Image**
+
+- **Endpoint**: `/generate-image/`
+- **Method**: `POST`
+- **Description**: Generates an AI-based image using Replicate.
+- **Request Body**:
+
+```json
+{
+  "topic": "Hooke's Law",
+  "custom_prompt": "A car suspension system absorbing impact.",
+  "prompt_type": "topic"
+}
+```
+
+- **Response**:
+
+```json
+{
+  "status": 200,
+  "image_url": "https://example.com/image.webp"
+}
+```
+
+---
+
+### Chat Functionality
+
+#### 4. **Answer Question**
+
+- **Endpoint**: `/answer-question/`
+- **Method**: `POST`
+- **Description**: Provides an AI-generated answer to a question based on a lesson context.
+- **Request Body**:
+
+```json
+{
+  "question": "What is photosynthesis?",
+  "lesson_context": "{...}"
+}
+```
+
+- **Response**:
+
+```json
+{
+  "status": 200,
+  "payload": {
+    "explanation": "...",
+    "practice_question": { ... },
+    "follow_up_output": "Would you like me to create some flashcards on this for you?"
+  }
+}
+```
+
+---
+
+### Search/Memory Functionality
+
+#### 5. **Search**
+
+- **Endpoint**: `/search/`
+- **Method**: `POST`
+- **Description**: Searches for items in the database cache.
+- **Request Body**:
+
+```json
+{
+  "table": "ai_quiz",
+  "query": "physics resistivity",
+  "bucket_size": 5
+}
+```
+
+- **Response**:
+
+```json
+[
+  {"unique_id": "12345", "title": "Physics Quiz", "score": 95},
+  ...
+]
+```
+
+---
+
+### Cache Management
+
+#### 6. **Update Cache**
+
+- **Endpoint**: `/update-cache/`
+- **Method**: `POST`
+- **Description**: Updates an entry in the database cache.
+- **Request Body**:
+
+```json
+{
+  "table": "lesson",
+  "unique_id": "12345",
+  "title": "Updated Lesson Title"
+}
+```
+
+- **Headers**:
+  - `X-StudentVault-Key`: Authentication key.
+- **Response**:
+
+```json
+{
+  "status": 200,
+  "message": "Entry updated successfully"
+}
+```
+
+#### 7. **Delete Item**
+
+- **Endpoint**: `/delete-item/`
+- **Method**: `POST`
+- **Description**: Deletes an entry from the database cache.
+- **Request Body**:
+
+```json
+{
+  "table": "lesson",
+  "unique_id": "12345",
+  "title": "Lesson to Delete"
+}
+```
+
+- **Headers**:
+  - `X-StudentVault-Key`: Authentication key.
+- **Response**:
+
+```json
+{
+  "status": 200,
+  "message": "Entry deleted successfully"
+}
+```
+
+#### 8. **Force Sync**
+
+- **Endpoint**: `/force-sync/`
+- **Method**: `GET`
+- **Description**: Forces a manual sync of the database cache.
+- **Headers**:
+  - `X-StudentVault-Key`: Authentication key.
+- **Response**:
+
+```json
+{
+  "status": 200,
+  "message": "Data synced to cache successfully"
+}
+```
+
+---
+
+### Utility Endpoints
+
+#### 9. **Get Captions**
+
+- **Endpoint**: `/get-captions/`
+- **Method**: `POST`
+- **Description**: Retrieves captions for a YouTube video.
+- **Request Body**:
+
+```json
+{
+  "video_id": "MmgxJZeMCSc"
+}
+```
+
+- **Response**:
+
+```json
+{
+  "status": 200,
+  "captions": "Full transcript of the video...",
   "errors": []
 }
 ```
 
-- `status`: The HTTP status code (200 for success).
-- `captions`: A string containing the captions from the video.
-- `errors`: Any error messages if the request fails.
+#### 10. **Show Cache**
 
-### Error Handling
+- **Endpoint**: `/show-cache/`
+- **Method**: `POST`
+- **Description**: Displays the contents of the database cache.
+- **Query Parameters**:
+  - `table`: (Optional) The specific table to display.
+- **Response**:
 
-If there's an issue with retrieving captions (e.g., invalid URL, video doesn't support captions), the API will return a `400` status code with error details:
+```json
+{
+  "module": {...},
+  "lesson": {...},
+  ...
+}
+```
+
+---
+
+## Error Handling
+
+- **400 Bad Request**: Returned for invalid input or unauthenticated requests.
+- **500 Internal Server Error**: Returned for unexpected server errors.
+
+Example error response:
 
 ```json
 {
   "status": 400,
-  "errors": [
-    "Found 1 errors: The video URL you provided either isn't a valid URL or the video doesn't support captions."
-  ]
+  "errors": ["Invalid video ID"]
 }
 ```
 
-## Code Overview
-
-- **`app.py`**: The main Flask application file that handles incoming requests and sends responses.
-- **`youtube.py`**: Contains the `Youtube` class, which interacts with the YouTube Transcript API to fetch captions.
-- **`request.py`**: A script for sending test requests to the API.
-- **`gunicorn_config.py`**: Configuration for running the app with Gunicorn in a production environment.
-- **`response_objects.py`**: Defines data structures (e.g., Pydantic models) for handling responses.
+---
 
 ## License
 
-This project is proprietary and for personal use only. Unauthorized use, duplication, or distribution is prohibited.
+This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
