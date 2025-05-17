@@ -66,7 +66,7 @@ Ensure the following environment variables are set:
 {
   "status": 200,
   "resource_type": "lesson",
-  "payload": { ... }
+  "payload": {}
 }
 ```
 
@@ -86,10 +86,7 @@ Ensure the following environment variables are set:
 - **Response**:
 
 ```json
-[
-  {"front": "What is another name for stocks/shares?", "back": "Equities"},
-  ...
-]
+[{ "front": "What is another name for stocks/shares?", "back": "Equities" }, {}]
 ```
 
 #### 3. **Generate Image**
@@ -141,7 +138,7 @@ Ensure the following environment variables are set:
   "status": 200,
   "payload": {
     "explanation": "...",
-    "practice_question": { ... },
+    "practice_question": {},
     "follow_up_output": "Would you like me to create some flashcards on this for you?"
   }
 }
@@ -169,10 +166,7 @@ Ensure the following environment variables are set:
 - **Response**:
 
 ```json
-[
-  {"unique_id": "12345", "title": "Physics Quiz", "score": 95},
-  ...
-]
+[{ "unique_id": "12345", "title": "Physics Quiz", "score": 95 }, {}]
 ```
 
 ---
@@ -285,9 +279,9 @@ Ensure the following environment variables are set:
 
 ```json
 {
-  "module": {...},
-  "lesson": {...},
-  ...
+  "module": {  },
+  "lesson": {  },
+  {  }
 }
 ```
 
